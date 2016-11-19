@@ -3,10 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <GridView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:text="I'm in a fragment!" />
+        android:layout_height="wrap_content"
+        android:id="@+id/grid_view"
+        android:numColumns="3"
+        />
 
 </FrameLayout>
