@@ -6,22 +6,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class GridFragment extends Fragment {
-    public ArrayAdapter<String> adapter;
-    public String[] data = {
-            "derp", "lol", "derpino",
-            "lollino", "lollone", "ahah",
-            "well", "wellone"
-    };
+    final static String PICASSO_URL = "http://i.imgur.com/DvpvklR.png";
+    final static String CAT_URL = "https://www.petdrugsonline.co.uk/images/page-headers/cats-master-header";
 
-    public List<String> stringList = new ArrayList<>(Arrays.asList(data));
+    public ThumbnailAdapter adapter;
 
     public GridFragment() {
         // Required empty public constructor
@@ -31,7 +25,14 @@ public class GridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        adapter = new ArrayAdapter<>(getContext(), R.layout.textview, stringList);
+
+        //four picasso images, just to populate it with something
+        String[] urls = {
+            PICASSO_URL, CAT_URL, PICASSO_URL, CAT_URL
+        };
+
+        adapter = new ThumbnailAdapter(getContext(), new ArrayList<>(Arrays.asList(urls)));
+
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view);
         gridView.setAdapter(adapter);
 
