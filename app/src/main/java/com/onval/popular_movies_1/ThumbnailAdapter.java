@@ -29,7 +29,7 @@ public class ThumbnailAdapter extends ArrayAdapter<String> {
             imageView = new ImageView(getContext());
         }
 
-        String url = getItem(position);
+        String url = "http://image.tmdb.org/t/p/" + "w185" + getItem(position);
         Picasso.with(getContext()).load(url).into(imageView);
 
         return imageView;

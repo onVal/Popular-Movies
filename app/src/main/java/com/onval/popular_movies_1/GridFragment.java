@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class GridFragment extends Fragment {
     final static String PICASSO_URL = "http://i.imgur.com/DvpvklR.png";
     final static String CAT_URL = "https://www.petdrugsonline.co.uk/images/page-headers/cats-master-header";
+    static ArrayList<String> urls = new ArrayList<>();
 
     public ThumbnailAdapter adapter;
 
@@ -27,14 +27,26 @@ public class GridFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         //four picasso images, just to populate it with something
-        String[] urls = {
-            PICASSO_URL, CAT_URL, PICASSO_URL, CAT_URL
-        };
+//        String[] urls = {
+//            PICASSO_URL, CAT_URL, PICASSO_URL, CAT_URL
+//        };
 
-        adapter = new ThumbnailAdapter(getContext(), new ArrayList<>(Arrays.asList(urls)));
+        /* result has to be the movie posters urls
+         * result = asynctask.execute();
+         * result.getPosterPath() <- for each elem
+         * NEED TO ADD url path processing inside the adapter (or outside???)
+         */
+
+        try {
+            new FetchPopularMoviesTask().execute().get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        adapter = new ThumbnailAdapter(getContext(), urls);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view);
         gridView.setAdapter(adapter);
+
 
         return rootView;
     }
