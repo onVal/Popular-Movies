@@ -1,6 +1,7 @@
 package com.onval.popular_movies_1;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,14 @@ public class ThumbnailAdapter extends ArrayAdapter<String> {
             imageView = new ImageView(getContext());
         }
 
-        String url = "http://image.tmdb.org/t/p/" + "w185" + getItem(position);
-        Picasso.with(getContext()).load(url).into(imageView);
+        String url = "http://image.tmdb.org/t/p/" + "w342" + getItem(position);
+        Picasso.with(getContext())
+                .load(url)
+                .resize(360, 480)
+                .centerCrop()
+                .into(imageView);
 
+        imageView.setBackgroundColor(Color.parseColor("#ff0000"));
         return imageView;
     }
 }
