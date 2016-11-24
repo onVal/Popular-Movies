@@ -1,9 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.onval.popular_movies_1.DetailActivity">
 
-</FrameLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:text="TITLE"
+        android:textSize="50sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:minHeight="80dp"
+        android:background="#22bbaa"
+ />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/thumbnail"
+        android:minHeight="200dp"
+        android:minWidth="130dp"
+        android:background="#22bbff"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/vote_average"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_below="@+id/title"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+
+        android:text="7.4 / 10"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/release_date"
+        android:text="23/03/2015"
+        android:textSize="18sp"
+        android:layout_below="@+id/vote_average"
+        android:layout_toRightOf="@id/thumbnail"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/overview"
+        android:text="balblablablalalblablalbalblalbalblalbl"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_below="@+id/thumbnail" />
+
+</RelativeLayout>
