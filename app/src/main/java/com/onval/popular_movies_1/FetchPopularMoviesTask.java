@@ -88,7 +88,7 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
     // returns null if something goes wrong
     private ArrayList<MovieDetail> createMovieListFromJSON(String jsonString) {
         ArrayList<MovieDetail> movieDetails = new ArrayList<>();
-
+        String title;
         String posterPath;
         String overview;
         double vote_average;
@@ -100,12 +100,13 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
             for (int i = 0; i < jsonResultsArray.length(); i++) {
                 JSONObject jsonCurrentElement = jsonResultsArray.getJSONObject(i);
 
+                title = (String) jsonCurrentElement.get("title");
                 posterPath = (String) jsonCurrentElement.get("poster_path");
                 overview = (String) jsonCurrentElement.get("overview");
                 vote_average = (double) jsonCurrentElement.get("vote_average");
                 release_date = (String) jsonCurrentElement.get("release_date");
 
-                movieDetails.add(new MovieDetail(posterPath, overview, vote_average, release_date));
+                movieDetails.add(new MovieDetail(title, posterPath, overview, vote_average, release_date));
             }
         } catch (JSONException | NullPointerException exc) {
             exc.printStackTrace();
