@@ -37,6 +37,8 @@ public class ThumbnailAdapter extends ArrayAdapter<String> {
                 .centerCrop()
                 .into(imageView);
 
+        //try imageView.setScaleType(CENTER_CROP) (from picasso samples)
+
         imageView.setBackgroundColor(Color.parseColor("#ff0000"));
         return imageView;
     }

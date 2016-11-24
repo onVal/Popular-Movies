@@ -28,7 +28,6 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
     protected ArrayList<MovieDetail> doInBackground(Void... voids) {
         final String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
 
-
         //Building the URL using Uri.Builder
         URL requestUrl;
 
@@ -46,10 +45,12 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
 
         // Getting the JSON response string from the server
         String JSONString = getJSONStringFromServer(requestUrl);
-        if (JSONString == null) return null;
 
         // Parsing the JSON String
-         return createMovieListFromJSON (JSONString);
+        if (JSONString != null)
+            return createMovieListFromJSON (JSONString);
+        else
+            return null;
     }
 
     @Override
@@ -83,29 +84,33 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
         return serverResponse.toString();
     }
 
+    // creates the arrayList of movie details from the json data
+    // returns null if something goes wrong
     private ArrayList<MovieDetail> createMovieListFromJSON(String jsonString) {
         ArrayList<MovieDetail> movieDetails = new ArrayList<>();
 
         String posterPath;
-//        String overview;
-//        double vote_average;
-//        String release_date;
+        String overview;
+        double vote_average;
+        String release_date;
 
         try {
-            JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray jsonResultsArray =  jsonObject.getJSONArray("results");
+            JSONArray jsonResultsArray =  new JSONObject(jsonString).getJSONArray("results");
 
-            for (int i = 0; i < 20; i++) {
-                posterPath = (String) jsonResultsArray.getJSONObject(i).get("poster_path");
-                movieDetails.add(new MovieDetail(posterPath, "", 0.0, ""));
+            for (int i = 0; i < jsonResultsArray.length(); i++) {
+                JSONObject jsonCurrentElement = jsonResultsArray.getJSONObject(i);
+
+                posterPath = (String) jsonCurrentElement.get("poster_path");
+                overview = (String) jsonCurrentElement.get("overview");
+                vote_average = (double) jsonCurrentElement.get("vote_average");
+                release_date = (String) jsonCurrentElement.get("release_date");
+
+                movieDetails.add(new MovieDetail(posterPath, overview, vote_average, release_date));
             }
         } catch (JSONException | NullPointerException exc) {
             exc.printStackTrace();
+            return null;
         }
-
-//        for (MovieDetail m: movieDetails)
-//            Log.d(LOG_KEY, m.getPosterPath());
-
         return movieDetails;
     }
 }
