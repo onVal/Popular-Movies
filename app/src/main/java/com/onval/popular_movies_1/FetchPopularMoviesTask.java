@@ -80,7 +80,7 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
             return null;
         }
 
-        Log.d(LOG_KEY, serverResponse.toString());
+//        Log.d(LOG_KEY, serverResponse.toString());
         return serverResponse.toString();
     }
 

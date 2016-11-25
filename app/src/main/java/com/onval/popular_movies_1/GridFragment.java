@@ -13,8 +13,6 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 public class GridFragment extends Fragment {
-    final static String PICASSO_URL = "http://i.imgur.com/DvpvklR.png";
-    final static String CAT_URL = "https://www.petdrugsonline.co.uk/images/page-headers/cats-master-header";
     static ArrayList<String> urls = new ArrayList<>();
 
     public ThumbnailAdapter adapter;
@@ -27,17 +25,6 @@ public class GridFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        //four picasso images, just to populate it with something
-//        String[] urls = {
-//            PICASSO_URL, CAT_URL, PICASSO_URL, CAT_URL
-//        };
-
-        /* result has to be the movie posters urls
-         * result = asynctask.execute();
-         * result.getPosterPath() <- for each elem
-         * NEED TO ADD url path processing inside the adapter (or outside???)
-         */
 
         try {
             new FetchPopularMoviesTask().execute().get();
