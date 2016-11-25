@@ -1,11 +1,13 @@
 package com.onval.popular_movies_1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -36,12 +38,17 @@ public class GridFragment extends Fragment {
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view);
         gridView.setAdapter(adapter);
 
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                startActivity(new Intent(getContext(), DetailActivity.class));
-//            }
-//        });
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MovieDetail clickedView = ((MovieDetail) adapterView.getItemAtPosition(i));
+
+                Intent intent = new Intent(getContext(), DetailActivity.class);
+                intent.putExtra("com.onval.popular_movies_1.DetailClass", clickedView);
+
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
