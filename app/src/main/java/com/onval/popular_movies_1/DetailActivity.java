@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class DetailActivity extends AppCompatActivity {
     static MovieDetail movieDetail;
 
@@ -46,12 +48,10 @@ public class DetailActivity extends AppCompatActivity {
             overview.setText(movieDetail.getOverview());
 
             TextView voteAverage = (TextView) rootView.findViewById(R.id.vote_average);
-            voteAverage.setText(String.valueOf(movieDetail.getVote_average()));
+            voteAverage.setText(String.valueOf(movieDetail.getVote_average()) + " / 10");
 
             ImageView thumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
-//            thumbnail.setImageURI(movi);
-              // GOTTA USE PICASSO!!!
-
+            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/" + "w342" + movieDetail.getPosterPath()).into(thumbnail);
 
             return rootView;
         }
