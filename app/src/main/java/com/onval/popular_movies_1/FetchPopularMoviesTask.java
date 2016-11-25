@@ -53,14 +53,6 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
             return null;
     }
 
-    @Override
-    protected void onPostExecute(ArrayList<MovieDetail> movieDetails) {
-        if (!movieDetails.isEmpty()) {
-            for (MovieDetail m : movieDetails)
-                GridFragment.urls.add(m.getPosterPath());
-        }
-    }
-
     private String getJSONStringFromServer(URL url) {
         StringBuilder serverResponse = new StringBuilder();
 
@@ -71,8 +63,8 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
             String currentLine = "";
 
             while (currentLine != null) {
-                currentLine = in.readLine();
                 serverResponse.append(currentLine);
+                currentLine = in.readLine();
             }
         }
         catch (IOException exc) {

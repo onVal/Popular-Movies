@@ -1,19 +1,17 @@
 package com.onval.popular_movies_1;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 
 import java.util.ArrayList;
 
 public class GridFragment extends Fragment {
-    static ArrayList<String> urls = new ArrayList<>();
+    ArrayList<MovieDetail> movieDetails = new ArrayList<>();
 
     public ThumbnailAdapter adapter;
 
@@ -27,21 +25,23 @@ public class GridFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         try {
-            new FetchPopularMoviesTask().execute().get();
+            movieDetails = new FetchPopularMoviesTask().execute().get();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        adapter = new ThumbnailAdapter(getContext(), urls);
+
+        // extract urls arraylist here from movieDetails arrayList...or NOT
+        adapter = new ThumbnailAdapter(getContext(), movieDetails);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view);
         gridView.setAdapter(adapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                startActivity(new Intent(getContext(), DetailActivity.class));
-            }
-        });
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                startActivity(new Intent(getContext(), DetailActivity.class));
+//            }
+//        });
 
         return rootView;
     }
