@@ -18,6 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity" />
+        <activity android:name=".MyPreferenceActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

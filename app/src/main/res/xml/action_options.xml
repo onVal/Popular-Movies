@@ -3,12 +3,10 @@
 
     <ListPreference
         android:key="sort_by"
-        android:defaultValue="sort_by_popularity"
-        android:dialogTitle="Sort the results by: "
+        android:defaultValue="@string/pref_popularity_value"
+        android:dialogTitle="@string/pref_title"
+        android:entries="@array/pref_sort_entries"
+        android:entryValues="@array/pref_sort_values"
+    />
 
-
-        />
-
-    <!--android:entries="@array/sort_options"-->
-    <!--android:entryValues="@array/values"-->
 </PreferenceScreen>
