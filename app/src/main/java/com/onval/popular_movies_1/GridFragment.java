@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,24 +22,34 @@ public class GridFragment extends Fragment {
         // Required empty public constructor
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
+    private void fetchFromMovieDb() {
         String sortOption = PreferenceManager.getDefaultSharedPreferences(getContext())
                 .getString(getString(R.string.pref_sort_key),
                         getString(R.string.pref_popularity_value));
-
-        Log.d("TAG", sortOption);
 
         try {
             movieDetails = new FetchPopularMoviesTask().execute(sortOption).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        // extract urls arraylist here from movieDetails arrayList...or NOT
+    @Override
+    public void onStart() {
+        super.onStart();
+        fetchFromMovieDb();
+
+        adapter.clear();
+        adapter.addAll(movieDetails);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        fetchFromMovieDb();
+
         adapter = new ThumbnailAdapter(getContext(), movieDetails);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view);
