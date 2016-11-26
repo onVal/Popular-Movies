@@ -2,8 +2,10 @@ package com.onval.popular_movies_1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +28,14 @@ public class GridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        String sortOption = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString(getString(R.string.pref_sort_key),
+                        getString(R.string.pref_popularity_value));
+
+        Log.d("TAG", sortOption);
+
         try {
-            movieDetails = new FetchPopularMoviesTask().execute().get();
+            movieDetails = new FetchPopularMoviesTask().execute(sortOption).get();
         } catch (Exception e) {
             e.printStackTrace();
         }

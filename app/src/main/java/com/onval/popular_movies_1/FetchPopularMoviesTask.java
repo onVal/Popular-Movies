@@ -20,21 +20,24 @@ import java.util.ArrayList;
  * Created by gval on 22/11/16.
  */
 
-public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<MovieDetail>> {
+public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<MovieDetail>> {
     final private String LOG_KEY = FetchPopularMoviesTask.class.getSimpleName();
-    public String sortBy = "popularity.desc";
 
     @Override
-    protected ArrayList<MovieDetail> doInBackground(Void... voids) {
+    protected ArrayList<MovieDetail> doInBackground(String... param) {
         final String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
+        final String API_KEY_PARAM = "api_key";
+        final String SORT_BY_PARAM = "sort_by";
 
         //Building the URL using Uri.Builder
         URL requestUrl;
 
         Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter("api_key", BuildConfig.MOVIEDB_API_KEY)
-                .appendQueryParameter("sort_by", sortBy)
+                .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
+                .appendQueryParameter(SORT_BY_PARAM, param[0])
                 .build();
+
+        Log.d(LOG_KEY, uri.toString());
 
         try {
             requestUrl = new URL(uri.toString());
@@ -46,7 +49,7 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
         // Getting the JSON response string from the server
         String JSONString = getJSONStringFromServer(requestUrl);
 
-        // Parsing the JSON String
+        // Parsing and returning the JSON String
         if (JSONString != null)
             return createMovieListFromJSON (JSONString);
         else
