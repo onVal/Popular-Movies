@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class GridFragment extends Fragment {
     ArrayList<MovieDetail> movieDetails = new ArrayList<>();
 
-    public ThumbnailAdapter adapter;
+    public static ThumbnailAdapter adapter;
 
     public GridFragment() {
         // Required empty public constructor
@@ -28,7 +28,7 @@ public class GridFragment extends Fragment {
                         getString(R.string.pref_popularity_value));
 
         try {
-            movieDetails = new FetchPopularMoviesTask().execute(sortOption).get();
+            new FetchPopularMoviesTask().execute(sortOption).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -37,10 +37,12 @@ public class GridFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        fetchFromMovieDb();
 
-        adapter.clear();
-        adapter.addAll(movieDetails);
+        if (adapter != null)
+            fetchFromMovieDb();
+
+//        adapter.clear();
+//        adapter.addAll(movieDetails);
     }
 
     @Nullable
@@ -48,7 +50,15 @@ public class GridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        fetchFromMovieDb();
+        String sortOption = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString(getString(R.string.pref_sort_key),
+                        getString(R.string.pref_popularity_value));
+
+        try {
+            movieDetails = new FetchPopularMoviesTask().execute(sortOption).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         adapter = new ThumbnailAdapter(getContext(), movieDetails);
 

@@ -56,6 +56,14 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
             return null;
     }
 
+    @Override
+    protected void onPostExecute(ArrayList<MovieDetail> movieDetails) {
+        if (!movieDetails.isEmpty()) {
+            GridFragment.adapter.clear();
+            GridFragment.adapter.addAll(movieDetails);
+        }
+    }
+
     private String getJSONStringFromServer(URL url) {
         StringBuilder serverResponse = new StringBuilder();
 
