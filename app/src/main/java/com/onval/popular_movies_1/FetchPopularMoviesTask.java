@@ -92,11 +92,11 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
             for (int i = 0; i < jsonResultsArray.length(); i++) {
                 JSONObject jsonCurrentElement = jsonResultsArray.getJSONObject(i);
 
-                title = (String) jsonCurrentElement.get("title");
-                posterPath = (String) jsonCurrentElement.get("poster_path");
-                overview = (String) jsonCurrentElement.get("overview");
-                vote_average = (double) jsonCurrentElement.get("vote_average");
-                release_date = (String) jsonCurrentElement.get("release_date");
+                title = jsonCurrentElement.getString("title");
+                posterPath = jsonCurrentElement.getString("poster_path");
+                overview = jsonCurrentElement.getString("overview");
+                vote_average = jsonCurrentElement.getDouble("vote_average");
+                release_date = jsonCurrentElement.getString("release_date");
 
                 movieDetails.add(new MovieDetail(title, posterPath, overview, vote_average, release_date));
             }
