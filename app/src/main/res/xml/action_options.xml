@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <ListPreference
+        android:key="sort_by"
+        android:defaultValue="sort_by_popularity"
+        android:dialogTitle="Sort the results by: "
+
+
+        />
+
+    <!--android:entries="@array/sort_options"-->
+    <!--android:entryValues="@array/values"-->
 </PreferenceScreen>
