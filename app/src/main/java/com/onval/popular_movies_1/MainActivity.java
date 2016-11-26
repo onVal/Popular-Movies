@@ -1,7 +1,9 @@
 package com.onval.popular_movies_1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -26,7 +28,11 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        if (item.getItemId() == R.id.settings) {
+            Log.d("lol", "Settings clicked");
+            startActivity(new Intent(this, MyPreferenceActivity.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 }
