@@ -83,11 +83,6 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
                 });
             }
 
-            //FOR DEBUG ONLY
-            for (MovieDetail m : movieDetails) {
-                Log.d(LOG_KEY, m.getVote_average() + "");
-            }
-
             GridFragment.adapter.clear();
             GridFragment.adapter.addAll(movieDetails);
         }

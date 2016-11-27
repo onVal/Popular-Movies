@@ -28,8 +28,7 @@ public class GridFragment extends Fragment {
                         getString(R.string.pref_popularity_value));
 
         try {
-            //TODO: SHOULDN'T I REMOVE .GET BY NOW??
-            new FetchPopularMoviesTask(getContext()).execute(sortOption).get();
+            new FetchPopularMoviesTask(getContext()).execute(sortOption);
         } catch (Exception e) {
             e.printStackTrace();
         }
