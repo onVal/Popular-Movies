@@ -26,7 +26,14 @@ import java.util.Comparator;
 
 public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<MovieDetail>> {
     final private String LOG_KEY = FetchPopularMoviesTask.class.getSimpleName();
+    final private String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
+    final private String API_KEY_PARAM = "api_key";
+    final private String PAGE_NUM_PARAM = "page";
+    final private int NUMBER_OF_PAGES = 2;
+
     Context context;
+
+
 
     FetchPopularMoviesTask(Context context) {
         this.context = context;
@@ -34,33 +41,45 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
 
     @Override
     protected ArrayList<MovieDetail> doInBackground(String... param) {
-        final String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
-        final String API_KEY_PARAM = "api_key";
 
-        //Building the URL using Uri.Builder
-        URL requestUrl;
+        ArrayList<MovieDetail> movieDetailArrayList = new ArrayList<>();
 
-        Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
-                .build();
+        String JSONString;
 
-        Log.d(LOG_KEY, uri.toString());
+        /* This loop fetches NUMBER_OF_PAGES times through the moviedb servers
+         * fetching multiple 'pages' of movies (each page gives you 20 results)
+         * for efficiency and simplicity I decided to fetch just from 2 pages (40 results)
+         * since when I go for a higher number, the gridview/adapter start panicking
+         */
+        for (int i=1; i <= NUMBER_OF_PAGES; i++) {
+            //Building the URL using Uri.Builder
+            URL requestUrl;
 
-        try {
-            requestUrl = new URL(uri.toString());
-        } catch (MalformedURLException exc) {
-            Log.e(LOG_KEY, "Malformed URL: " + uri.toString());
-            return null;
+            Uri uri = Uri.parse(BASE_URL).buildUpon()
+                    .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
+                    .appendQueryParameter(PAGE_NUM_PARAM, String.valueOf(i))
+                    .build();
+
+            Log.d(LOG_KEY, uri.toString());
+
+            try {
+                requestUrl = new URL(uri.toString());
+            } catch (MalformedURLException exc) {
+                Log.e(LOG_KEY, "Malformed URL: " + uri.toString());
+                return null;
+            }
+
+            // Getting the JSON response string from the server
+            JSONString = getJSONStringFromServer(requestUrl);
+
+
+            // Parsing and returning the JSON String
+            if (JSONString != null)
+                movieDetailArrayList.addAll(createMovieListFromJSON(JSONString));
+            else
+                return null;
         }
-
-        // Getting the JSON response string from the server
-        String JSONString = getJSONStringFromServer(requestUrl);
-
-        // Parsing and returning the JSON String
-        if (JSONString != null)
-            return createMovieListFromJSON (JSONString);
-        else
-            return null;
+        return movieDetailArrayList;
     }
 
     @Override
