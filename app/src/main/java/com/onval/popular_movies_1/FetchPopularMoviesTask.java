@@ -35,16 +35,13 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
     @Override
     protected ArrayList<MovieDetail> doInBackground(String... param) {
         final String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
-        final String POPULARITY_DESC = "popularity.desc";
         final String API_KEY_PARAM = "api_key";
-        final String SORT_BY_PARAM = "sort_by";
 
         //Building the URL using Uri.Builder
         URL requestUrl;
 
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
-                .appendQueryParameter(SORT_BY_PARAM, POPULARITY_DESC)
                 .build();
 
         Log.d(LOG_KEY, uri.toString());
