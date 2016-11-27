@@ -3,7 +3,6 @@ package com.onval.popular_movies_1;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -32,7 +31,6 @@ public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
         }
 
         String url = "http://image.tmdb.org/t/p/" + "w342" + getItem(position).getPosterPath();
-        Log.d("URL", url);
 
         Picasso.with(getContext())
                 .load(url)
