@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,9 @@ public class DetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
+            ImageView thumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
+            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/" + "w342" + movieDetail.getPosterPath()).into(thumbnail);
+
             TextView titleView = (TextView) rootView.findViewById(R.id.title);
             titleView.setText(movieDetail.getTitle());
 
@@ -46,12 +50,11 @@ public class DetailActivity extends AppCompatActivity {
 
             TextView overview = (TextView) rootView.findViewById(R.id.overview);
             overview.setText(movieDetail.getOverview());
+            overview.setMovementMethod(new ScrollingMovementMethod());
 
             TextView voteAverage = (TextView) rootView.findViewById(R.id.vote_average);
             voteAverage.setText(String.valueOf(movieDetail.getVote_average()) + " / 10");
 
-            ImageView thumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
-            Picasso.with(getContext()).load("http://image.tmdb.org/t/p/" + "w342" + movieDetail.getPosterPath()).into(thumbnail);
 
             return rootView;
         }

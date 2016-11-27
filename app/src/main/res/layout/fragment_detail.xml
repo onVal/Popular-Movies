@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/colorDetailBg"
+    >
 
+    <!--TITLE-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/title"
-        android:textSize="40dp"
+        android:textSize="35sp"
         android:textAlignment="center"
         android:gravity="center"
-        android:minHeight="80dp"
-        android:background="#22bbaa"
+        android:background="@color/colorTitleBg"
+        android:textColor="@android:color/white"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
         />
 
+    <!--POSTER IMAGE-->
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/thumbnail"
-        android:minHeight="200dp"
-        android:minWidth="130dp"
-        android:background="#22bbff"
         android:layout_below="@+id/title"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:scrollbars="vertical"
         />
 
+
+    <!--RATING (VOTE AVERAGE)-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,30 +40,32 @@
         android:layout_below="@+id/title"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"
         />
 
+    <!--RELEASE DATE-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/release_date"
-        android:text="23/03/2015"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:layout_below="@+id/vote_average"
         android:layout_toRightOf="@id/thumbnail"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:textColor="@android:color/white"
         />
 
+    <!--MOVIE DESCRIPTION (OVERVIEW)-->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/overview"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_below="@+id/thumbnail"
-
+        android:textColor="@android:color/white"
         />
 
 </RelativeLayout>
