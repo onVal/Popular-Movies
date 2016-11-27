@@ -28,7 +28,8 @@ public class GridFragment extends Fragment {
                         getString(R.string.pref_popularity_value));
 
         try {
-            new FetchPopularMoviesTask().execute(sortOption).get();
+            //TODO: SHOULDN'T I REMOVE .GET BY NOW??
+            new FetchPopularMoviesTask(getContext()).execute(sortOption).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,8 +42,6 @@ public class GridFragment extends Fragment {
         if (adapter != null)
             fetchFromMovieDb();
 
-//        adapter.clear();
-//        adapter.addAll(movieDetails);
     }
 
     @Nullable
@@ -55,7 +54,7 @@ public class GridFragment extends Fragment {
                         getString(R.string.pref_popularity_value));
 
         try {
-            movieDetails = new FetchPopularMoviesTask().execute(sortOption).get();
+            movieDetails = new FetchPopularMoviesTask(getContext()).execute(sortOption).get();
         } catch (Exception e) {
             e.printStackTrace();
         }

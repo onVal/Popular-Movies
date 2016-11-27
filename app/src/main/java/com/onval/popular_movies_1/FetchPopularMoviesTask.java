@@ -1,7 +1,9 @@
 package com.onval.popular_movies_1;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -15,6 +17,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by gval on 22/11/16.
@@ -22,10 +26,16 @@ import java.util.ArrayList;
 
 public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<MovieDetail>> {
     final private String LOG_KEY = FetchPopularMoviesTask.class.getSimpleName();
+    Context context;
+
+    FetchPopularMoviesTask(Context context) {
+        this.context = context;
+    }
 
     @Override
     protected ArrayList<MovieDetail> doInBackground(String... param) {
         final String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
+        final String POPULARITY_DESC = "popularity.desc";
         final String API_KEY_PARAM = "api_key";
         final String SORT_BY_PARAM = "sort_by";
 
@@ -34,7 +44,7 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
 
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
-                .appendQueryParameter(SORT_BY_PARAM, param[0])
+                .appendQueryParameter(SORT_BY_PARAM, POPULARITY_DESC)
                 .build();
 
         Log.d(LOG_KEY, uri.toString());
@@ -59,6 +69,25 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
     @Override
     protected void onPostExecute(ArrayList<MovieDetail> movieDetails) {
         if (!movieDetails.isEmpty()) {
+            // Sort the results according to option selected before updating the adapter
+            String sortOption = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString(context.getString(R.string.pref_sort_key),
+                            context.getString(R.string.pref_popularity_value));
+
+            if (sortOption.equals(context.getString(R.string.pref_ratings_value))) {
+                Collections.sort(movieDetails, new Comparator<MovieDetail>() {
+                    @Override
+                    public int compare(MovieDetail md1, MovieDetail md2) {
+                        return ((Double) Math.signum((md2.getVote_average() - md1.getVote_average()))).intValue();
+                    }
+                });
+            }
+
+            //FOR DEBUG ONLY
+            for (MovieDetail m : movieDetails) {
+                Log.d(LOG_KEY, m.getVote_average() + "");
+            }
+
             GridFragment.adapter.clear();
             GridFragment.adapter.addAll(movieDetails);
         }
