@@ -31,7 +31,7 @@ public class MyPreferenceActivity extends PreferenceActivity
         onPreferenceChange(preference,
                 PreferenceManager
                         .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+                        .getString(preference.getKey(), getString(R.string.pref_popularity_value)));
     }
 
     @Override
