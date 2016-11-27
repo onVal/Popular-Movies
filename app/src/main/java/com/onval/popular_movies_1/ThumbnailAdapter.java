@@ -1,7 +1,6 @@
 package com.onval.popular_movies_1;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -32,6 +31,7 @@ public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
             imageView = new ImageView(getContext());
         }
 
+        //Build the URL to retrieve the images
         final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
         final String IMAGE_SIZE = "w342";
 
@@ -40,15 +40,12 @@ public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
                 .appendEncodedPath(getItem(position).getPosterPath())
                 .build();
 
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
         Picasso.with(getContext())
                 .load(uri.toString())
-                .resize(360, 480)
-                .centerCrop()
                 .into(imageView);
 
-        //try imageView.setScaleType(CENTER_CROP) (from picasso samples)
-
-        imageView.setBackgroundColor(Color.parseColor("#ff0000"));
         return imageView;
     }
 }
