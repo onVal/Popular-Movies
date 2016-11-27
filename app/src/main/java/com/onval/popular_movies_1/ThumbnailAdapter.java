@@ -2,6 +2,7 @@ package com.onval.popular_movies_1;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
  */
 
 public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
+    private final String LOG_TAG = ThumbnailAdapter.class.getSimpleName();
 
     ThumbnailAdapter(Context context, ArrayList<MovieDetail> movieDetails) {
         super (context, 0, movieDetails);
@@ -30,10 +32,16 @@ public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
             imageView = new ImageView(getContext());
         }
 
-        String url = "http://image.tmdb.org/t/p/" + "w342" + getItem(position).getPosterPath();
+        final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
+        final String IMAGE_SIZE = "w342";
+
+        Uri uri = Uri.parse(BASE_IMAGE_URL).buildUpon()
+                .appendPath(IMAGE_SIZE)
+                .appendEncodedPath(getItem(position).getPosterPath())
+                .build();
 
         Picasso.with(getContext())
-                .load(url)
+                .load(uri.toString())
                 .resize(360, 480)
                 .centerCrop()
                 .into(imageView);
