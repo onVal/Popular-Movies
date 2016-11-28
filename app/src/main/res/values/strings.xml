@@ -16,7 +16,8 @@
     <string name="pref_ratings_value" translatable="false">top_rating</string>
 
     <!--No internet fragment-->
-    <string name="no_internet_msg">NO internet! Hit refresh</string>
-    <string name="refresh_btn_txt">REFRESH</string>
+    <string name="no_internet_msg">Couldn\'t connect to server.
+                            \n\nMake sure your internet connection is active and try again</string>
+    <string name="refresh_btn_txt">RETRY</string>
 
 </resources>
