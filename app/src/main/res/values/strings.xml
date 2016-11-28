@@ -15,4 +15,8 @@
     <string name="pref_popularity_value" translatable="false">popularity</string>
     <string name="pref_ratings_value" translatable="false">top_rating</string>
 
+    <!--No internet fragment-->
+    <string name="no_internet_msg">NO internet! Hit refresh</string>
+    <string name="refresh_btn_txt">REFRESH</string>
+
 </resources>

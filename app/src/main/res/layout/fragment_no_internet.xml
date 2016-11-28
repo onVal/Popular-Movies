@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NO internet! Hit refresh"
+        android:text="@string/no_internet_msg"
         android:textSize="30dp"
         android:layout_gravity="center"
         android:layout_marginTop="100dp"
@@ -14,8 +14,8 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="REFRESH"
-        android:textSize="30dp"
+        android:text="@string/refresh_btn_txt"
+        android:textSize="20dp"
         android:layout_gravity="center"
         />
 </LinearLayout>
