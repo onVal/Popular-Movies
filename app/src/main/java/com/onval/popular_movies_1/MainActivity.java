@@ -1,9 +1,6 @@
 package com.onval.popular_movies_1;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,7 +14,11 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            if (isOnline()) {
+            /* Check for internet connection at launch,
+             * load either the expected gridFragment, or a temporary
+             * NoInternetFragment until the device has internet access again
+             */
+            if (CheckConnection.isOnline(this)) {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.activity_main, new GridFragment())
                         .commit();
@@ -28,13 +29,6 @@ public class MainActivity extends AppCompatActivity  {
             }
         }
 
-    }
-
-    public boolean isOnline() {
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     @Override
