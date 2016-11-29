@@ -1,9 +1,8 @@
 package com.onval.popular_movies_1;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
  */
 
 public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
+    private final String LOG_TAG = ThumbnailAdapter.class.getSimpleName();
 
     ThumbnailAdapter(Context context, ArrayList<MovieDetail> movieDetails) {
         super (context, 0, movieDetails);
@@ -31,18 +31,21 @@ public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
             imageView = new ImageView(getContext());
         }
 
-        String url = "http://image.tmdb.org/t/p/" + "w342" + getItem(position).getPosterPath();
-        Log.d("URL", url);
+        //Build the URL to retrieve the images
+        final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
+        final String IMAGE_SIZE = "w342";
+
+        Uri uri = Uri.parse(BASE_IMAGE_URL).buildUpon()
+                .appendPath(IMAGE_SIZE)
+                .appendEncodedPath(getItem(position).getPosterPath())
+                .build();
+
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         Picasso.with(getContext())
-                .load(url)
-                .resize(360, 480)
-                .centerCrop()
+                .load(uri.toString())
                 .into(imageView);
 
-        //try imageView.setScaleType(CENTER_CROP) (from picasso samples)
-
-        imageView.setBackgroundColor(Color.parseColor("#ff0000"));
         return imageView;
     }
 }

@@ -2,6 +2,7 @@ package com.onval.popular_movies_1;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,10 +16,31 @@ import java.util.ArrayList;
 public class GridFragment extends Fragment {
     ArrayList<MovieDetail> movieDetails = new ArrayList<>();
 
-    public ThumbnailAdapter adapter;
+    public static ThumbnailAdapter adapter;
 
     public GridFragment() {
         // Required empty public constructor
+    }
+
+    private void fetchFromMovieDb() {
+        String sortOption = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString(getString(R.string.pref_sort_key),
+                        getString(R.string.pref_popularity_value));
+
+        try {
+            new FetchPopularMoviesTask(getContext()).execute(sortOption);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (adapter != null)
+            fetchFromMovieDb();
+
     }
 
     @Nullable
@@ -26,13 +48,16 @@ public class GridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        String sortOption = PreferenceManager.getDefaultSharedPreferences(getContext())
+                .getString(getString(R.string.pref_sort_key),
+                        getString(R.string.pref_popularity_value));
+
         try {
-            movieDetails = new FetchPopularMoviesTask().execute().get();
+            movieDetails = new FetchPopularMoviesTask(getContext()).execute(sortOption).get();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // extract urls arraylist here from movieDetails arrayList...or NOT
         adapter = new ThumbnailAdapter(getContext(), movieDetails);
 
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view);

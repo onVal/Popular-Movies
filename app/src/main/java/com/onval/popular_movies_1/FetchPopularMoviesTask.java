@@ -1,7 +1,9 @@
 package com.onval.popular_movies_1;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -15,42 +17,91 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by gval on 22/11/16.
  */
 
-public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<MovieDetail>> {
+public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<MovieDetail>> {
     final private String LOG_KEY = FetchPopularMoviesTask.class.getSimpleName();
-    public String sortBy = "popularity.desc";
+    final private String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
+    final private String API_KEY_PARAM = "api_key";
+    final private String PAGE_NUM_PARAM = "page";
+    final private int NUMBER_OF_PAGES = 2;
+
+    Context context;
+
+
+
+    FetchPopularMoviesTask(Context context) {
+        this.context = context;
+    }
 
     @Override
-    protected ArrayList<MovieDetail> doInBackground(Void... voids) {
-        final String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
+    protected ArrayList<MovieDetail> doInBackground(String... param) {
 
-        //Building the URL using Uri.Builder
-        URL requestUrl;
+        ArrayList<MovieDetail> movieDetailArrayList = new ArrayList<>();
 
-        Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter("api_key", BuildConfig.MOVIEDB_API_KEY)
-                .appendQueryParameter("sort_by", sortBy)
-                .build();
+        String JSONString;
 
-        try {
-            requestUrl = new URL(uri.toString());
-        } catch (MalformedURLException exc) {
-            Log.e(LOG_KEY, "Malformed URL: " + uri.toString());
-            return null;
+        /* This loop fetches NUMBER_OF_PAGES times through the moviedb servers
+         * fetching multiple 'pages' of movies (each page gives you 20 results)
+         * for efficiency and simplicity I decided to fetch just from 2 pages (40 results)
+         * since when I go for a higher number, the gridview/adapter start panicking
+         */
+        for (int i=1; i <= NUMBER_OF_PAGES; i++) {
+            //Building the URL using Uri.Builder
+            URL requestUrl;
+
+            Uri uri = Uri.parse(BASE_URL).buildUpon()
+                    .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
+                    .appendQueryParameter(PAGE_NUM_PARAM, String.valueOf(i))
+                    .build();
+
+            Log.d(LOG_KEY, uri.toString());
+
+            try {
+                requestUrl = new URL(uri.toString());
+            } catch (MalformedURLException exc) {
+                Log.e(LOG_KEY, "Malformed URL: " + uri.toString());
+                return null;
+            }
+
+            // Getting the JSON response string from the server
+            JSONString = getJSONStringFromServer(requestUrl);
+
+
+            // Parsing and returning the JSON String
+            if (JSONString != null)
+                movieDetailArrayList.addAll(createMovieListFromJSON(JSONString));
+            else
+                return null;
         }
+        return movieDetailArrayList;
+    }
 
-        // Getting the JSON response string from the server
-        String JSONString = getJSONStringFromServer(requestUrl);
+    @Override
+    protected void onPostExecute(ArrayList<MovieDetail> movieDetails) {
+        if (!movieDetails.isEmpty()) {
+            // Sort the results according to option selected before updating the adapter
+            String sortOption = PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString(context.getString(R.string.pref_sort_key),
+                            context.getString(R.string.pref_popularity_value));
 
-        // Parsing the JSON String
-        if (JSONString != null)
-            return createMovieListFromJSON (JSONString);
-        else
-            return null;
+            if (sortOption.equals(context.getString(R.string.pref_ratings_value))) {
+                Collections.sort(movieDetails, new Comparator<MovieDetail>() {
+                    @Override
+                    public int compare(MovieDetail md1, MovieDetail md2) {
+                        return ((Double) Math.signum((md2.getVote_average() - md1.getVote_average()))).intValue();
+                    }
+                });
+            }
+
+            GridFragment.adapter.clear();
+            GridFragment.adapter.addAll(movieDetails);
+        }
     }
 
     private String getJSONStringFromServer(URL url) {
@@ -92,11 +143,11 @@ public class FetchPopularMoviesTask extends AsyncTask<Void, Void, ArrayList<Movi
             for (int i = 0; i < jsonResultsArray.length(); i++) {
                 JSONObject jsonCurrentElement = jsonResultsArray.getJSONObject(i);
 
-                title = (String) jsonCurrentElement.get("title");
-                posterPath = (String) jsonCurrentElement.get("poster_path");
-                overview = (String) jsonCurrentElement.get("overview");
-                vote_average = (double) jsonCurrentElement.get("vote_average");
-                release_date = (String) jsonCurrentElement.get("release_date");
+                title = jsonCurrentElement.getString("title");
+                posterPath = jsonCurrentElement.getString("poster_path");
+                overview = jsonCurrentElement.getString("overview");
+                vote_average = jsonCurrentElement.getDouble("vote_average");
+                release_date = jsonCurrentElement.getString("release_date");
 
                 movieDetails.add(new MovieDetail(title, posterPath, overview, vote_average, release_date));
             }
