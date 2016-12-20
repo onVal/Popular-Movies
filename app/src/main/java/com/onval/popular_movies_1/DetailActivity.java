@@ -38,6 +38,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            //TODO: Use ButterKnife or DataBindingLibrary instead of this
 
             ImageView thumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
             Picasso.with(getContext()).load("http://image.tmdb.org/t/p/" + "w342" + movieDetail.getPosterPath()).into(thumbnail);

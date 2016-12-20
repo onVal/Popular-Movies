@@ -104,6 +104,7 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
         }
     }
 
+    //TODO: Use OKHttp, Volley or Gson instead of this
     private String getJSONStringFromServer(URL url) {
         StringBuilder serverResponse = new StringBuilder();
 
