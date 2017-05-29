@@ -53,6 +53,8 @@ public class GridFragment extends Fragment {
                 .getString(getString(R.string.pref_sort_key),
                         getString(R.string.pref_popularity_value));
 
+        FetchUtilities.fetchMoviesToArray(getContext());
+
         try {
             movieDetails = new FetchPopularMoviesTask(getContext()).execute(sortOption).get();
         } catch (Exception e) {
