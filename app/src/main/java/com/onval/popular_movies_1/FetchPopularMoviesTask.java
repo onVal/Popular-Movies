@@ -99,8 +99,8 @@ public class FetchPopularMoviesTask extends AsyncTask<String, Void, ArrayList<Mo
                 });
             }
 
-            GridFragment.adapter.clear();
-            GridFragment.adapter.addAll(movieDetails);
+//            GridFragment.adapter.clear();
+//            GridFragment.adapter.addAll(movieDetails);
         }
     }
 

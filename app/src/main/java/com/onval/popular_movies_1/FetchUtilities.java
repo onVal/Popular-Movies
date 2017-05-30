@@ -16,6 +16,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import static com.onval.popular_movies_1.GridFragment.movieDetails;
 
 /**
  * Created by gval on 29/05/2017.
@@ -38,13 +42,8 @@ public class FetchUtilities {
     }
 
     // Use volley library to fetch movie data in JSON format
-    public static void fetchMoviesToArray(Context context) {
-
+    public static void fetchMoviesToArray(final Context context) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
-
-        String sortBy =  PreferenceManager.getDefaultSharedPreferences(context).getString(
-                context.getString(R.string.pref_sort_key), context.getString(R.string.pref_popularity_value));
-
 
         for (int i = 1; i <= DEFAULT_NUMBER_OF_PAGES; i++) {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
@@ -53,9 +52,8 @@ public class FetchUtilities {
                     new Response.Listener<JSONObject>() {       // when finishes
                         @Override
                         public void onResponse(JSONObject response) {
-                            Log.d(LOG_TAG, response.toString());
-                            createMovieListFromJSON(response);
-                            //TODO: implement: Add results to UI
+                            movieDetails = createMovieListFromJSON(response);
+                            sortMovies(context);
                         }
                     },
                     new Response.ErrorListener() {              // when error
@@ -63,8 +61,6 @@ public class FetchUtilities {
                         public void onErrorResponse(VolleyError error) {
                             //TODO: To implement
                             Log.e(LOG_TAG, "onErrorResponse: an error has occurred.");
-
-                            // maybe show a toast?
                         }
                     }
             );
@@ -102,5 +98,20 @@ public class FetchUtilities {
             return null;
         }
         return movieDetails;
+    }
+
+    private static void sortMovies(Context context) {
+        String sortOption = PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(context.getString(R.string.pref_sort_key),
+                        context.getString(R.string.pref_popularity_value));
+
+        if (sortOption.equals(context.getString(R.string.pref_ratings_value))) {
+            Collections.sort(movieDetails, new Comparator<MovieDetail>() {
+                @Override
+                public int compare(MovieDetail md1, MovieDetail md2) {
+                    return ((Double) Math.signum((md2.getVote_average() - md1.getVote_average()))).intValue();
+                }
+            });
+        }
     }
 }

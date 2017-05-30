@@ -14,9 +14,9 @@ import android.widget.GridView;
 import java.util.ArrayList;
 
 public class GridFragment extends Fragment {
-    ArrayList<MovieDetail> movieDetails = new ArrayList<>();
+    public static ArrayList<MovieDetail> movieDetails = new ArrayList<>();
 
-    public static ThumbnailAdapter adapter;
+    private ThumbnailAdapter adapter;
 
     public GridFragment() {
         // Required empty public constructor
@@ -49,17 +49,7 @@ public class GridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String sortOption = PreferenceManager.getDefaultSharedPreferences(getContext())
-                .getString(getString(R.string.pref_sort_key),
-                        getString(R.string.pref_popularity_value));
-
         FetchUtilities.fetchMoviesToArray(getContext());
-
-        try {
-            movieDetails = new FetchPopularMoviesTask(getContext()).execute(sortOption).get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         adapter = new ThumbnailAdapter(getContext(), movieDetails);
 

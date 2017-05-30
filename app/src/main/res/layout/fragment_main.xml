@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <GridView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/grid_view"
-        android:gravity="start"
-        android:numColumns="auto_fit"
-        android:columnWidth="110dp"
-        />
-
-</FrameLayout>
+    android:layout_height="match_parent"
+    android:id="@+id/grid_view"
+    android:gravity="start"
+    android:numColumns="auto_fit"
+    android:columnWidth="110dp"
+     />
