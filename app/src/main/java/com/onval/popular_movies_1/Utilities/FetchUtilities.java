@@ -18,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -55,7 +54,8 @@ public class FetchUtilities {
                     new Response.Listener<JSONObject>() {       // when finishes
                         @Override
                         public void onResponse(JSONObject response) {
-                            movieDetails = createMovieListFromJSON(response);
+                            createMovieListFromJSON(response);
+                            debug(); //tmp
                             sortMovies(context);
                         }
                     },
@@ -72,10 +72,18 @@ public class FetchUtilities {
         }
     }
 
+    //DEBUG METHOD
+    public static void debug() {
+        for (MovieDetail m  : movieDetails) {
+            Log.d(LOG_TAG, m.getTitle());
+            Log.d(LOG_TAG, m.getRelease_date());
+            Log.d(LOG_TAG, m.getPosterPath());
+        }
+    }
+
     // creates the arrayList of movie details from the json data
     // returns null if something goes wrong
-    private static ArrayList<MovieDetail> createMovieListFromJSON(JSONObject jsonObject) {
-        ArrayList<MovieDetail> movieDetails = new ArrayList<>();
+    private static void createMovieListFromJSON(JSONObject jsonObject) {
         String title;
         String posterPath; //url path
         String overview;
@@ -98,9 +106,7 @@ public class FetchUtilities {
             }
         } catch (JSONException | NullPointerException exc) {
             exc.printStackTrace();
-            return null;
         }
-        return movieDetails;
     }
 
     private static void sortMovies(Context context) {
