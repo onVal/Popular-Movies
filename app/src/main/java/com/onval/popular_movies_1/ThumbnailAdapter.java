@@ -1,16 +1,14 @@
 package com.onval.popular_movies_1;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.onval.popular_movies_1.Utilities.FetchUtilities;
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 /**
  * Created by gval on 21/11/16.
@@ -19,8 +17,8 @@ import java.util.ArrayList;
 public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
     private final String LOG_TAG = ThumbnailAdapter.class.getSimpleName();
 
-    ThumbnailAdapter(Context context, ArrayList<MovieDetail> movieDetails) {
-        super (context, 0, movieDetails);
+    ThumbnailAdapter(Context context) {
+        super (context, 0, GridFragment.movieDetails);
     }
 
     @NonNull
@@ -31,19 +29,12 @@ public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
             imageView = new ImageView(getContext());
         }
 
-        //Build the URL to retrieve the images
-        final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
-        final String IMAGE_SIZE = "w342";
-
-        Uri uri = Uri.parse(BASE_IMAGE_URL).buildUpon()
-                .appendPath(IMAGE_SIZE)
-                .appendEncodedPath(getItem(position).getPosterPath())
-                .build();
+        String url = FetchUtilities.extractImageUri(getItem(position)).toString();
 
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
         Picasso.with(getContext())
-                .load(uri.toString())
+                .load(url)
                 .into(imageView);
 
         return imageView;

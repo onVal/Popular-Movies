@@ -30,10 +30,17 @@ import static com.onval.popular_movies_1.GridFragment.movieDetails;
 public class FetchUtilities {
     final static private String LOG_TAG = FetchUtilities.class.getSimpleName();
 
+    //Url for movies info
     final static private String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
     final static private String API_KEY_PARAM = "api_key";
     final static private String PAGE_NUM_PARAM = "page";
-    final static private int DEFAULT_NUMBER_OF_PAGES = 2;
+    final static private int DEFAULT_NUMBER_OF_PAGES = 1;
+
+    //URL to retrieve the images
+    final static private String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
+
+    // Available options: "w92", "w154", "w185", "w342", "w500", "w780", or "original"
+    final static private String IMAGE_SIZE = "w342";
 
     private static Uri createMoviesUri(int pageNumber) {
 
@@ -46,7 +53,6 @@ public class FetchUtilities {
     // Use volley library to fetch movie data in JSON format
     public static void fetchMoviesToArray(final Context context) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
-
         for (int i = 1; i <= DEFAULT_NUMBER_OF_PAGES; i++) {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                     createMoviesUri(DEFAULT_NUMBER_OF_PAGES).toString(),              // string url
@@ -54,7 +60,7 @@ public class FetchUtilities {
                     new Response.Listener<JSONObject>() {       // when finishes
                         @Override
                         public void onResponse(JSONObject response) {
-                            createMovieListFromJSON(response);
+                            addMoviesFromJSON(response);
                             debug(); //tmp
                             sortMovies(context);
                         }
@@ -72,18 +78,23 @@ public class FetchUtilities {
         }
     }
 
+    public static Uri extractImageUri(MovieDetail movie) {
+        return Uri.parse(BASE_IMAGE_URL).buildUpon()
+                .appendPath(IMAGE_SIZE)
+                .appendEncodedPath(movie.getPosterPath())
+                .build();
+    }
+
     //DEBUG METHOD
-    public static void debug() {
+    private static void debug() {
         for (MovieDetail m  : movieDetails) {
             Log.d(LOG_TAG, m.getTitle());
-            Log.d(LOG_TAG, m.getRelease_date());
-            Log.d(LOG_TAG, m.getPosterPath());
         }
     }
 
     // creates the arrayList of movie details from the json data
     // returns null if something goes wrong
-    private static void createMovieListFromJSON(JSONObject jsonObject) {
+    private static void addMoviesFromJSON(JSONObject jsonObject) {
         String title;
         String posterPath; //url path
         String overview;

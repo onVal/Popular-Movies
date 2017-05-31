@@ -3,7 +3,6 @@ package com.onval.popular_movies_1;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,18 +26,6 @@ public class GridFragment extends Fragment {
         // Required empty public constructor
     }
 
-    private void fetchFromMovieDb() {
-        String sortOption = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(getString(R.string.pref_sort_key),
-                        getString(R.string.pref_popularity_value));
-
-        try {
-            new FetchPopularMoviesTask(context).execute(sortOption);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -57,7 +44,7 @@ public class GridFragment extends Fragment {
         context = getContext();
 
         FetchUtilities.fetchMoviesToArray(context);
-        adapter = new ThumbnailAdapter(context, movieDetails);
+        adapter = new ThumbnailAdapter(context);
         gridView.setAdapter(adapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
