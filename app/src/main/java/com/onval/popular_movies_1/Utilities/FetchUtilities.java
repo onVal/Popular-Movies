@@ -1,4 +1,4 @@
-package com.onval.popular_movies_1;
+package com.onval.popular_movies_1.Utilities;
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,6 +10,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.onval.popular_movies_1.BuildConfig;
+import com.onval.popular_movies_1.MovieDetail;
+import com.onval.popular_movies_1.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

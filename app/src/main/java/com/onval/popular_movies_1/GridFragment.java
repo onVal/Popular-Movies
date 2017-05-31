@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.onval.popular_movies_1.Utilities.FetchUtilities;
+
 import java.util.ArrayList;
 
 public class GridFragment extends Fragment {
