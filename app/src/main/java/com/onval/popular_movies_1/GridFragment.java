@@ -30,11 +30,16 @@ public class GridFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-//        if (adapter != null)
-//            fetchFromMovieDb();
+        if (adapter != null) {
+            // TODO: fix - something ain't working
+            FetchUtilities.clearMovieDetails();
+            adapter.clear();
+
+            FetchUtilities.fetchMoviesToArray(context);
+            adapter.addAll(movieDetails);
+        }
 
     }
-
 
     @Nullable
     @Override
@@ -43,6 +48,7 @@ public class GridFragment extends Fragment {
         GridView gridView = (GridView) rootView.findViewById(R.id.grid_view);
         context = getContext();
 
+        FetchUtilities.clearMovieDetails();
         FetchUtilities.fetchMoviesToArray(context);
         adapter = new ThumbnailAdapter(context);
         gridView.setAdapter(adapter);

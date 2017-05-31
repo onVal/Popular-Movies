@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.onval.popular_movies_1.BuildConfig;
+import com.onval.popular_movies_1.GridFragment;
 import com.onval.popular_movies_1.MovieDetail;
 import com.onval.popular_movies_1.R;
 
@@ -76,6 +77,10 @@ public class FetchUtilities {
             //Add the request queues sequentially
             requestQueue.add(jsonObjectRequest);
         }
+    }
+
+    public static void clearMovieDetails() {
+        GridFragment.movieDetails.clear();
     }
 
     public static Uri extractImageUri(MovieDetail movie) {
