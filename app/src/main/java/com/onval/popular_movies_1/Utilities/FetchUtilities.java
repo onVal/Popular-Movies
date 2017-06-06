@@ -5,13 +5,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.onval.popular_movies_1.BuildConfig;
-import com.onval.popular_movies_1.GridFragment;
 import com.onval.popular_movies_1.MovieDetail;
 import com.onval.popular_movies_1.R;
 
@@ -35,7 +29,6 @@ public class FetchUtilities {
     final static private String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
     final static private String API_KEY_PARAM = "api_key";
     final static private String PAGE_NUM_PARAM = "page";
-    final static private int DEFAULT_NUMBER_OF_PAGES = 1;
 
     //URL to retrieve the images
     final static private String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
@@ -43,55 +36,35 @@ public class FetchUtilities {
     // Available options: "w92", "w154", "w185", "w342", "w500", "w780", or "original"
     final static private String IMAGE_SIZE = "w342";
 
-    private static Uri createMoviesUri(int pageNumber) {
+    public static Uri createMoviesUri(int pageNumber) {
 
-        return Uri.parse(BASE_URL).buildUpon()
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
                 .appendQueryParameter(PAGE_NUM_PARAM, String.valueOf(pageNumber))
                 .build();
+
+        Log.d(LOG_TAG, "URI: " + uri);
+        return uri;
     }
 
-    // Use volley library to fetch movie data in JSON format
-    public static void fetchMoviesToArray(final Context context) {
-        final RequestQueue requestQueue = Volley.newRequestQueue(context);
-        for (int i = 1; i <= DEFAULT_NUMBER_OF_PAGES; i++) {
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                    createMoviesUri(DEFAULT_NUMBER_OF_PAGES).toString(),              // string url
-                    null,                                       // optional JSONObject parameter
-                    new Response.Listener<JSONObject>() {       // when finishes
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            addMoviesFromJSON(response);
-                            debug(); //tmp
-                            sortMovies(context);
-                        }
-                    },
-                    new Response.ErrorListener() {              // when error
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //TODO: To implement
-                            Log.e(LOG_TAG, "onErrorResponse: an error has occurred.");
-                        }
-                    }
-            );
-            //Add the request queues sequentially
-            requestQueue.add(jsonObjectRequest);
-        }
-    }
 
-    public static void clearMovieDetails() {
-        GridFragment.movieDetails.clear();
-    }
+
+//    public static void clearMovieDetails() {
+//        GridFragment.movieDetails.clear();
+//    }
 
     public static Uri extractImageUri(MovieDetail movie) {
-        return Uri.parse(BASE_IMAGE_URL).buildUpon()
+        Uri uri = Uri.parse(BASE_IMAGE_URL).buildUpon()
                 .appendPath(IMAGE_SIZE)
                 .appendEncodedPath(movie.getPosterPath())
                 .build();
+
+        Log.d(LOG_TAG, "Image URI: " + uri);
+        return uri;
     }
 
     //DEBUG METHOD
-    private static void debug() {
+    public static void debug() {
         for (MovieDetail m  : movieDetails) {
             Log.d(LOG_TAG, m.getTitle());
         }
@@ -99,7 +72,7 @@ public class FetchUtilities {
 
     // creates the arrayList of movie details from the json data
     // returns null if something goes wrong
-    private static void addMoviesFromJSON(JSONObject jsonObject) {
+    public static void addMoviesFromJSON(JSONObject jsonObject) {
         String title;
         String posterPath; //url path
         String overview;
@@ -125,7 +98,7 @@ public class FetchUtilities {
         }
     }
 
-    private static void sortMovies(Context context) {
+    public static void sortMovies(Context context) {
         String sortOption = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(R.string.pref_sort_key),
                         context.getString(R.string.pref_popularity_value));
