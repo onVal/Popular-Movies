@@ -80,7 +80,7 @@ public class FetchUtilities {
         String release_date;
 
         try {
-            JSONArray jsonResultsArray =  jsonObject.getJSONArray("results");
+            JSONArray jsonResultsArray = jsonObject.getJSONArray("results");
 
             for (int i = 0; i < jsonResultsArray.length(); i++) {
                 JSONObject jsonCurrentElement = jsonResultsArray.getJSONObject(i);

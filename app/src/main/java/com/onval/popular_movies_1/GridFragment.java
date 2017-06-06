@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -56,6 +57,7 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         gridView = (GridView) rootView.findViewById(R.id.grid_view);
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         context = getContext();
 
 //        FetchUtilities.clearMovieDetails();
@@ -79,6 +81,15 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
                 startActivity(intent);
             }
         });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //todo: to implement
+            }
+        });
+
+
 
         return rootView;
     }
