@@ -35,6 +35,8 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
     public static ArrayList<MovieDetail> movieDetails = new ArrayList<>();
     private GridView gridView;
 
+    private int lastPageFetched = 1;
+
     private ThumbnailAdapter adapter;
 
     public GridFragment() {
@@ -42,25 +44,27 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
 
         if (adapter != null) {
+            lastPageFetched = 1;
+            movieDetails.clear();
             fetchMoviesToArray();
-//            adapter.addAll(movieDetails);
         }
 
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         gridView = (GridView) rootView.findViewById(R.id.grid_view);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
         context = getContext();
 
 //        FetchUtilities.clearMovieDetails();
+        movieDetails.clear();
         fetchMoviesToArray();
 
         //debug
@@ -86,35 +90,34 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
             @Override
             public void onClick(View v) {
                 //todo: to implement
+                lastPageFetched++;
+                fetchMoviesToArray();
+                sortMovies(context);
+                //fetch next page of movies and add it to array
+                //sort the whole array
+                //show (automatic)
             }
         });
-
-
 
         return rootView;
     }
 
     // Use volley library to fetch movie data in JSON format
     private void fetchMoviesToArray() {
-        final int DEFAULT_NUMBER_OF_PAGES = 2;
-
-        movieDetails.clear();
 
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
-        for (int i = 1; i <= DEFAULT_NUMBER_OF_PAGES; i++) {
 
-            String singlePageURL = FetchUtilities.createMoviesUri(i).toString();
+        String singlePageURL = FetchUtilities.createMoviesUri(lastPageFetched).toString();
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                    singlePageURL,  // string url
-                    null,           // optional JSONObject parameter (?)
-                    this,           //onResponse
-                    this            //onError
-            );
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                singlePageURL,  // string url
+                null,           // optional JSONObject parameter (?)
+                this,           //onResponse
+                this            //onError
+        );
             //Add the request queues sequentially
-            requestQueue.add(jsonObjectRequest);
-            requestQueue.addRequestFinishedListener(this);
-        }
+        requestQueue.addRequestFinishedListener(this);
+        requestQueue.add(jsonObjectRequest);
     }
 
     @Override
