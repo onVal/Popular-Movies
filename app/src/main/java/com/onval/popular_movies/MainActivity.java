@@ -1,4 +1,4 @@
-package com.onval.popular_movies_1;
+package com.onval.popular_movies;
 
 import android.content.Intent;
 import android.os.Bundle;

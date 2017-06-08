@@ -1,13 +1,13 @@
-package com.onval.popular_movies_1.Utilities;
+package com.onval.popular_movies.Utilities;
 
 import android.content.Context;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 
-import com.onval.popular_movies_1.BuildConfig;
-import com.onval.popular_movies_1.MovieDetail;
-import com.onval.popular_movies_1.R;
-import com.onval.popular_movies_1.ThumbnailAdapter;
+import com.onval.popular_movies.BuildConfig;
+import com.onval.popular_movies.MovieDetail;
+import com.onval.popular_movies.R;
+import com.onval.popular_movies.ThumbnailAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.onval.popular_movies_1;
+package com.onval.popular_movies;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,13 +19,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.onval.popular_movies_1.Utilities.FetchUtilities;
+import com.onval.popular_movies.Utilities.FetchUtilities;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.onval.popular_movies_1.Utilities.FetchUtilities.sortMovies;
+import static com.onval.popular_movies.Utilities.FetchUtilities.sortMovies;
 
 public class GridFragment extends Fragment implements
         Response.Listener<JSONObject>, Response.ErrorListener, RequestQueue.RequestFinishedListener<JSONObject> {

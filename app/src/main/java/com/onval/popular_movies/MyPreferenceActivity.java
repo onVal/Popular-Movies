@@ -1,4 +1,4 @@
-package com.onval.popular_movies_1;
+package com.onval.popular_movies;
 
 import android.os.Bundle;
 import android.preference.ListPreference;

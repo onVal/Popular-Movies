@@ -1,4 +1,4 @@
-package com.onval.popular_movies_1;
+package com.onval.popular_movies;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.onval.popular_movies_1.Utilities.FetchUtilities;
+import com.onval.popular_movies.Utilities.FetchUtilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
