@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.onval.popular_movies_1.BuildConfig;
 import com.onval.popular_movies_1.MovieDetail;
 import com.onval.popular_movies_1.R;
+import com.onval.popular_movies_1.ThumbnailAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,11 +59,12 @@ public class FetchUtilities {
 
     // creates the arrayList of movie details from the json data
     // returns null if something goes wrong
-    public static void addMoviesFromJSON(ArrayList<MovieDetail> movieDetails, JSONObject jsonObject) {
+    public static void addMoviesFromJSON(JSONObject jsonObject, ArrayList<MovieDetail> movieDetails, ThumbnailAdapter adapter) {
         String title;
         String posterPath; //url path
         String overview;
         double vote_average;
+        double popularity;
         String release_date;
 
         try {
@@ -75,9 +77,10 @@ public class FetchUtilities {
                 posterPath = jsonCurrentElement.getString("poster_path");
                 overview = jsonCurrentElement.getString("overview");
                 vote_average = jsonCurrentElement.getDouble("vote_average");
+                popularity = jsonCurrentElement.getDouble("popularity");
                 release_date = jsonCurrentElement.getString("release_date");
 
-                movieDetails.add(new MovieDetail(title, posterPath, overview, vote_average, release_date));
+                movieDetails.add(new MovieDetail(title, posterPath, overview, vote_average, popularity, release_date));
             }
         } catch (JSONException | NullPointerException exc) {
             exc.printStackTrace();
@@ -94,6 +97,15 @@ public class FetchUtilities {
                 @Override
                 public int compare(MovieDetail md1, MovieDetail md2) {
                     return ((Double) Math.signum((md2.getVote_average() - md1.getVote_average()))).intValue();
+                }
+            });
+        }
+
+        if (sortOption.equals(context.getString(R.string.pref_popularity_value))) {
+            Collections.sort(movieDetails, new Comparator<MovieDetail>() {
+                @Override
+                public int compare(MovieDetail md1, MovieDetail md2) {
+                    return ((Double) Math.signum((md2.getPopularity() - md1.getPopularity()))).intValue();
                 }
             });
         }

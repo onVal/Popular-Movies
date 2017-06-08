@@ -117,7 +117,7 @@ public class GridFragment extends Fragment implements
 
     @Override
     public void onResponse(JSONObject response) {
-        FetchUtilities.addMoviesFromJSON(movieDetails, response);
+        FetchUtilities.addMoviesFromJSON(response, movieDetails, adapter);
         sortMovies(movieDetails, mContext);
     }
 
