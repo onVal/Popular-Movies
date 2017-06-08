@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import com.onval.popular_movies.BuildConfig;
 import com.onval.popular_movies.MovieDetail;
 import com.onval.popular_movies.R;
-import com.onval.popular_movies.ThumbnailAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,7 +58,7 @@ public class FetchUtilities {
 
     // creates the arrayList of movie details from the json data
     // returns null if something goes wrong
-    public static void addMoviesFromJSON(JSONObject jsonObject, ArrayList<MovieDetail> movieDetails, ThumbnailAdapter adapter) {
+    public static void addMoviesFromJSON(JSONObject jsonObject, ArrayList<MovieDetail> movieDetails) {
         String title;
         String posterPath; //url path
         String overview;

@@ -1,17 +1,16 @@
 package com.onval.popular_movies;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,12 +32,13 @@ public class GridFragment extends Fragment implements
     private Context mContext;
     private final String LOG_TAG = GridFragment.class.getSimpleName();
 
-    private ArrayList<MovieDetail> movieDetails = new ArrayList<>();
-    private GridView gridView;
+    private ArrayList<MovieDetail> mMovieDetailsArray = new ArrayList<>();
 
-    private int pageToFetch = 0;
+    private RecyclerView mRecyclerView;
+    private RecyclerAdapter mRecyclerAdapter;
 
-    private ThumbnailAdapter adapter;
+    private int mPageToFetch = 0;
+
 
     public GridFragment() {
         // Required empty public constructor
@@ -48,10 +48,10 @@ public class GridFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        if (adapter != null) {
+        if (mRecyclerAdapter != null) {
             Log.d(LOG_TAG, "Calling onResume");
-            sortMovies(movieDetails, mContext);
-            adapter.notifyDataSetChanged();
+            sortMovies(mMovieDetailsArray, mContext);
+            mRecyclerAdapter.notifyDataSetChanged();
 
         }
     }
@@ -63,29 +63,32 @@ public class GridFragment extends Fragment implements
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        gridView = (GridView) rootView.findViewById(R.id.grid_view);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.grid_view);
+        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+        mRecyclerView.setLayoutManager(layoutManager);
+
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
         fetchNextPage();
 
         //debug
-        if (movieDetails.isEmpty())
+        if (mMovieDetailsArray.isEmpty())
             Log.d(LOG_TAG, "The array is empty after fetchMoviesToArray");
         else
-            Log.d(LOG_TAG, "The array has " + movieDetails.size() + " elements after fetching");
+            Log.d(LOG_TAG, "The array has " + mMovieDetailsArray.size() + " elements after fetching");
 
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                MovieDetail clickedView = ((MovieDetail) adapterView.getItemAtPosition(i));
-
-                Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("com.onval.popular_movies_1.DetailClass", clickedView);
-
-                startActivity(intent);
-            }
-        });
+//        mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                MovieDetail clickedView = ((MovieDetail) adapterView.getItemAtPosition(i));
+//
+//                Intent intent = new Intent(mContext, DetailActivity.class);
+//                intent.putExtra("com.onval.popular_movies_1.DetailClass", clickedView);
+//
+//                startActivity(intent);
+//            }
+//        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,9 +105,9 @@ public class GridFragment extends Fragment implements
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         requestQueue.addRequestFinishedListener(this);
 
-        ++pageToFetch;
+        ++mPageToFetch;
 
-        String singlePageURL = FetchUtilities.createMoviesUri(pageToFetch).toString();
+        String singlePageURL = FetchUtilities.createMoviesUri(mPageToFetch).toString();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 singlePageURL,  // string url
@@ -117,8 +120,8 @@ public class GridFragment extends Fragment implements
 
     @Override
     public void onResponse(JSONObject response) {
-        FetchUtilities.addMoviesFromJSON(response, movieDetails, adapter);
-        sortMovies(movieDetails, mContext);
+        FetchUtilities.addMoviesFromJSON(response, mMovieDetailsArray);
+        sortMovies(mMovieDetailsArray, mContext);
     }
 
     @Override
@@ -129,10 +132,10 @@ public class GridFragment extends Fragment implements
 
     @Override
     public void onRequestFinished(Request<JSONObject> request) {
-        if (adapter == null) {
-            adapter = new ThumbnailAdapter(mContext, movieDetails);
+        if (mRecyclerAdapter == null) {
+            mRecyclerAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray);
         }
 
-        gridView.setAdapter(adapter);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
     }
 }
