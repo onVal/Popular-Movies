@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import com.onval.popular_movies_1.Utilities.FetchUtilities;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 /**
  * Created by gval on 21/11/16.
  */
@@ -17,8 +19,8 @@ import com.squareup.picasso.Picasso;
 public class ThumbnailAdapter extends ArrayAdapter<MovieDetail> {
     private final String LOG_TAG = ThumbnailAdapter.class.getSimpleName();
 
-    ThumbnailAdapter(Context context) {
-        super (context, 0, GridFragment.movieDetails);
+    ThumbnailAdapter(Context context, ArrayList<MovieDetail> movieDetails) {
+        super (context, 0, movieDetails);
     }
 
     @NonNull

@@ -3,7 +3,6 @@ package com.onval.popular_movies_1.Utilities;
 import android.content.Context;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.onval.popular_movies_1.BuildConfig;
 import com.onval.popular_movies_1.MovieDetail;
@@ -13,10 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import static com.onval.popular_movies_1.GridFragment.movieDetails;
 
 /**
  * Created by gval on 29/05/2017.
@@ -43,15 +41,10 @@ public class FetchUtilities {
                 .appendQueryParameter(PAGE_NUM_PARAM, String.valueOf(pageNumber))
                 .build();
 
-        Log.d(LOG_TAG, "URI: " + uri);
+//        Log.d(LOG_TAG, "URI: " + uri);
         return uri;
     }
 
-
-
-//    public static void clearMovieDetails() {
-//        GridFragment.movieDetails.clear();
-//    }
 
     public static Uri extractImageUri(MovieDetail movie) {
         Uri uri = Uri.parse(BASE_IMAGE_URL).buildUpon()
@@ -59,20 +52,13 @@ public class FetchUtilities {
                 .appendEncodedPath(movie.getPosterPath())
                 .build();
 
-        Log.d(LOG_TAG, "Image URI: " + uri);
+//        Log.d(LOG_TAG, "Image URI: " + uri);
         return uri;
-    }
-
-    //DEBUG METHOD
-    public static void debug() {
-        for (MovieDetail m  : movieDetails) {
-            Log.d(LOG_TAG, m.getTitle());
-        }
     }
 
     // creates the arrayList of movie details from the json data
     // returns null if something goes wrong
-    public static void addMoviesFromJSON(JSONObject jsonObject) {
+    public static void addMoviesFromJSON(ArrayList<MovieDetail> movieDetails, JSONObject jsonObject) {
         String title;
         String posterPath; //url path
         String overview;
@@ -98,7 +84,7 @@ public class FetchUtilities {
         }
     }
 
-    public static void sortMovies(Context context) {
+    public static void sortMovies(ArrayList<MovieDetail> movieDetails, Context context) {
         String sortOption = PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(context.getString(R.string.pref_sort_key),
                         context.getString(R.string.pref_popularity_value));

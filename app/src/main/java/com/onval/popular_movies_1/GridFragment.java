@@ -27,15 +27,16 @@ import java.util.ArrayList;
 
 import static com.onval.popular_movies_1.Utilities.FetchUtilities.sortMovies;
 
-public class GridFragment extends Fragment implements Response.Listener<JSONObject>, Response.ErrorListener,
-        RequestQueue.RequestFinishedListener<JSONObject> {
-    private Context context;
+public class GridFragment extends Fragment implements
+        Response.Listener<JSONObject>, Response.ErrorListener, RequestQueue.RequestFinishedListener<JSONObject> {
+
+    private Context mContext;
     private final String LOG_TAG = GridFragment.class.getSimpleName();
 
-    public static ArrayList<MovieDetail> movieDetails = new ArrayList<>();
+    private ArrayList<MovieDetail> movieDetails = new ArrayList<>();
     private GridView gridView;
 
-    private int lastPageFetched = 1;
+    private int pageToFetch = 0;
 
     private ThumbnailAdapter adapter;
 
@@ -48,24 +49,24 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
         super.onResume();
 
         if (adapter != null) {
-            lastPageFetched = 1;
-            movieDetails.clear();
-            fetchMoviesToArray();
-        }
+            Log.d(LOG_TAG, "Calling onResume");
+            sortMovies(movieDetails, mContext);
+            adapter.notifyDataSetChanged();
 
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mContext = getContext();
+
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
         gridView = (GridView) rootView.findViewById(R.id.grid_view);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
-        context = getContext();
 
-//        FetchUtilities.clearMovieDetails();
-        movieDetails.clear();
-        fetchMoviesToArray();
+        fetchNextPage();
 
         //debug
         if (movieDetails.isEmpty())
@@ -79,7 +80,7 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MovieDetail clickedView = ((MovieDetail) adapterView.getItemAtPosition(i));
 
-                Intent intent = new Intent(context, DetailActivity.class);
+                Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("com.onval.popular_movies_1.DetailClass", clickedView);
 
                 startActivity(intent);
@@ -89,13 +90,7 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo: to implement
-                lastPageFetched++;
-                fetchMoviesToArray();
-                sortMovies(context);
-                //fetch next page of movies and add it to array
-                //sort the whole array
-                //show (automatic)
+                fetchNextPage();
             }
         });
 
@@ -103,11 +98,13 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
     }
 
     // Use volley library to fetch movie data in JSON format
-    private void fetchMoviesToArray() {
+    private void fetchNextPage() {
+        final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.addRequestFinishedListener(this);
 
-        final RequestQueue requestQueue = Volley.newRequestQueue(context);
+        ++pageToFetch;
 
-        String singlePageURL = FetchUtilities.createMoviesUri(lastPageFetched).toString();
+        String singlePageURL = FetchUtilities.createMoviesUri(pageToFetch).toString();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 singlePageURL,  // string url
@@ -115,16 +112,13 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
                 this,           //onResponse
                 this            //onError
         );
-            //Add the request queues sequentially
-        requestQueue.addRequestFinishedListener(this);
         requestQueue.add(jsonObjectRequest);
     }
 
     @Override
     public void onResponse(JSONObject response) {
-        FetchUtilities.addMoviesFromJSON(response);
-        FetchUtilities.debug(); //tmp
-        sortMovies(context);
+        FetchUtilities.addMoviesFromJSON(movieDetails, response);
+        sortMovies(movieDetails, mContext);
     }
 
     @Override
@@ -136,7 +130,7 @@ public class GridFragment extends Fragment implements Response.Listener<JSONObje
     @Override
     public void onRequestFinished(Request<JSONObject> request) {
         if (adapter == null) {
-            adapter = new ThumbnailAdapter(context);
+            adapter = new ThumbnailAdapter(mContext, movieDetails);
         }
 
         gridView.setAdapter(adapter);
