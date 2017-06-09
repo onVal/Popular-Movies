@@ -1,7 +1,6 @@
 package com.onval.popular_movies;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,10 +20,12 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MoviePosterHolder> {
     private Context mContext;
     private ArrayList<MovieDetail> mMovieDetails;
+    private ItemClickInterface mInterface;
 
-    RecyclerAdapter(Context context, ArrayList<MovieDetail> movieDetails) {
+    RecyclerAdapter(Context context, ArrayList<MovieDetail> movieDetails, ItemClickInterface myInterface) {
         mContext = context;
         mMovieDetails = movieDetails;
+        mInterface = myInterface;
     }
 
     @Override
@@ -41,10 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int pos = holder.getAdapterPosition();
-                Intent intent = new Intent(mContext, DetailActivity.class);
-                intent.putExtra("com.onval.popular_movies.DetailClass", mMovieDetails.get(pos));
-                mContext.startActivity(intent);
+                mInterface.onItemClick(holder);
             }
         });
     }
@@ -73,5 +71,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
                     .into(imageView);
 
         }
+    }
+
+    //Interface
+    interface ItemClickInterface {
+        void onItemClick(MoviePosterHolder holder);
     }
 }

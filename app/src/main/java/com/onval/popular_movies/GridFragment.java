@@ -1,6 +1,7 @@
 package com.onval.popular_movies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 import static com.onval.popular_movies.Utilities.FetchUtilities.sortMovies;
 
-public class GridFragment extends Fragment implements
+public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickInterface,
         Response.Listener<JSONObject>, Response.ErrorListener, RequestQueue.RequestFinishedListener<JSONObject> {
 
     private Context mContext;
@@ -120,10 +121,18 @@ public class GridFragment extends Fragment implements
     @Override
     public void onRequestFinished(Request<JSONObject> request) {
         if (mRecyclerAdapter == null) {
-            mRecyclerAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray);
+            mRecyclerAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray, this);
         }
 
         mRecyclerView.setAdapter(mRecyclerAdapter);
+    }
+
+    @Override
+    public void onItemClick(RecyclerAdapter.MoviePosterHolder holder) {
+        int position = holder.getAdapterPosition();
+        Intent intent = new Intent(mContext, DetailActivity.class);
+        intent.putExtra("com.onval.popular_movies.DetailClass", mMovieDetailsArray.get(position));
+        startActivity(intent);
     }
 }
 
