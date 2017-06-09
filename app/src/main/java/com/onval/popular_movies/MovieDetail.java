@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by gval on 23/11/16.
  */
 
+//TODO: make it parcelable (faster)
 public class MovieDetail implements Serializable {
     private String title;
     private String posterPath;

@@ -1,9 +1,11 @@
 package com.onval.popular_movies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -34,8 +36,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
     }
 
     @Override
-    public void onBindViewHolder(MoviePosterHolder holder, int position) {
+    public void onBindViewHolder(final MoviePosterHolder holder, int position) {
         holder.bind(position);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int pos = holder.getAdapterPosition();
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                intent.putExtra("com.onval.popular_movies.DetailClass", mMovieDetails.get(pos));
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -43,6 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
         return mMovieDetails.size();
     }
 
+    // ViewHolder class
     class MoviePosterHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 

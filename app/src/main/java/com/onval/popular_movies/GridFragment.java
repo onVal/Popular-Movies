@@ -77,19 +77,6 @@ public class GridFragment extends Fragment implements
         else
             Log.d(LOG_TAG, "The array has " + mMovieDetailsArray.size() + " elements after fetching");
 
-
-//        mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                MovieDetail clickedView = ((MovieDetail) adapterView.getItemAtPosition(i));
-//
-//                Intent intent = new Intent(mContext, DetailActivity.class);
-//                intent.putExtra("com.onval.popular_movies_1.DetailClass", clickedView);
-//
-//                startActivity(intent);
-//            }
-//        });
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,3 +126,4 @@ public class GridFragment extends Fragment implements
         mRecyclerView.setAdapter(mRecyclerAdapter);
     }
 }
+

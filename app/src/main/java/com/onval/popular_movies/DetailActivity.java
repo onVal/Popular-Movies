@@ -27,7 +27,7 @@ public class DetailActivity extends AppCompatActivity {
                     .commit();
 
             // Initialize movieDetail object with data received from intent
-            movieDetail = (MovieDetail) getIntent().getSerializableExtra("com.onval.popular_movies_1.DetailClass");
+            movieDetail = (MovieDetail) getIntent().getSerializableExtra("com.onval.popular_movies.DetailClass");
         }
     }
 
