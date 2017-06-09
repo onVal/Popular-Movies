@@ -2,6 +2,7 @@ package com.onval.popular_movies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +31,10 @@ import static com.onval.popular_movies.Utilities.FetchUtilities.sortMovies;
 public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickInterface,
         Response.Listener<JSONObject>, Response.ErrorListener, RequestQueue.RequestFinishedListener<JSONObject> {
 
+    private final int COL_SHOWN_IN_PORTRAIT = 3;
+    private final int COL_SHOWN_IN_LANDSCAPE = 5;
+
+
     private Context mContext;
     private final String LOG_TAG = GridFragment.class.getSimpleName();
 
@@ -37,6 +42,7 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
 
     private RecyclerView mRecyclerView;
     private RecyclerAdapter mRecyclerAdapter;
+    private  GridLayoutManager layoutManager;
 
     private int mPageToFetch = 0;
 
@@ -48,6 +54,11 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
     @Override
     public void onResume() {
         super.onResume();
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            layoutManager.setSpanCount(COL_SHOWN_IN_PORTRAIT);
+        else
+            layoutManager.setSpanCount(COL_SHOWN_IN_LANDSCAPE);
 
         if (mRecyclerAdapter != null) {
             Log.d(LOG_TAG, "Calling onResume");
@@ -65,7 +76,8 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.grid_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
+        layoutManager = new GridLayoutManager(mContext, 3);
+
         mRecyclerView.setLayoutManager(layoutManager);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
