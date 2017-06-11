@@ -138,7 +138,7 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
     public void onItemClick(RecyclerAdapter.MoviePosterHolder holder) {
         int position = holder.getAdapterPosition();
         Intent intent = new Intent(mContext, DetailActivity.class);
-        intent.putExtra("com.onval.popular_movies.DetailClass", mMovieDetailsArray.get(position));
+        intent.putExtra(MovieDetail.MOVIE_DETAILS_ID, mMovieDetailsArray.get(position));
         startActivity(intent);
     }
 }
