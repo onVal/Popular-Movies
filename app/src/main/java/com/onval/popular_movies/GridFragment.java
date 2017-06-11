@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -76,19 +77,13 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.grid_view);
-        layoutManager = new GridLayoutManager(mContext, 3);
+        layoutManager = new GridLayoutManager(mContext, COL_SHOWN_IN_PORTRAIT);
 
         mRecyclerView.setLayoutManager(layoutManager);
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
         fetchNextPage();
-
-        //debug
-        if (mMovieDetailsArray.isEmpty())
-            Log.d(LOG_TAG, "The array is empty after fetchMoviesToArray");
-        else
-            Log.d(LOG_TAG, "The array has " + mMovieDetailsArray.size() + " elements after fetching");
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,8 +121,8 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
 
     @Override
     public void onErrorResponse(VolleyError error) {
-        //TODO: To implement
-        Log.e(LOG_TAG, "onErrorResponse: an error has occurred.");
+        Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.e(LOG_TAG, "onErrorResponse: an error has occurred: " + error.getMessage());
     }
 
     @Override
