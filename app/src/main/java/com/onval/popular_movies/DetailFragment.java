@@ -14,34 +14,35 @@ import android.widget.TextView;
 import com.onval.popular_movies.Utilities.FetchUtilities;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailFragment extends Fragment {
-    public DetailFragment() { }
+    @BindView (R.id.thumbnail)      ImageView thumbnail;
+    @BindView(R.id.title)           TextView titleView;
+    @BindView(R.id.release_date)    TextView releaseDateView;
+    @BindView(R.id.overview)        TextView overview;
+    @BindView(R.id.vote_average)    TextView voteAverage;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        //TODO: Use ButterKnife or DataBindingLibrary instead of this
 
         // Initialize movieDetail object with data received from intent
         MovieDetail movieDetail = getActivity().getIntent().getParcelableExtra(MovieDetail.MOVIE_DETAILS_ID);
 
-        ImageView thumbnail = (ImageView) rootView.findViewById(R.id.thumbnail);
+        ButterKnife.bind(this, rootView);
+
+        //Load image to thumbnail
         Picasso.with(getContext()).load(FetchUtilities.IMAGE_URL + movieDetail.getPosterPath()).into(thumbnail);
 
-        TextView titleView = (TextView) rootView.findViewById(R.id.title);
+        //Set text elements
         titleView.setText(movieDetail.getTitle());
-
-        TextView releaseDateView = (TextView) rootView.findViewById(R.id.release_date);
         releaseDateView.setText(movieDetail.getRelease_date());
-
-        TextView overview = (TextView) rootView.findViewById(R.id.overview);
         overview.setText(movieDetail.getOverview());
         overview.setMovementMethod(new ScrollingMovementMethod());
-
-        TextView voteAverage = (TextView) rootView.findViewById(R.id.vote_average);
         voteAverage.setText(String.valueOf(movieDetail.getVote_average()) + " / 10");
-
 
         return rootView;
     }
