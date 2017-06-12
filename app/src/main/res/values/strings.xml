@@ -20,4 +20,7 @@
                             \n\nMake sure your internet connection is active and try again</string>
     <string name="refresh_btn_txt">RETRY</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

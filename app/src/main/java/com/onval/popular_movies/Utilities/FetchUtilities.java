@@ -29,10 +29,12 @@ public class FetchUtilities {
     final static private String PAGE_NUM_PARAM = "page";
 
     //URL to retrieve the images
-    final static private String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
+    final static private String BASE_IMAGE_URL = "http://image.tmdb.org/t/p/";
 
     // Available options: "w92", "w154", "w185", "w342", "w500", "w780", or "original"
     final static private String IMAGE_SIZE = "w342";
+
+    final static public String IMAGE_URL = BASE_IMAGE_URL + IMAGE_SIZE;
 
     public static Uri createMoviesUri(int pageNumber) {
 
