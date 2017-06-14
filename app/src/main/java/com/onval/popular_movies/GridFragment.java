@@ -27,14 +27,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.onval.popular_movies.Utilities.FetchUtilities.sortMovies;
-
 public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickInterface,
         Response.Listener<JSONObject>, Response.ErrorListener, RequestQueue.RequestFinishedListener<JSONObject> {
 
     private final int COL_SHOWN_IN_PORTRAIT = 3;
     private final int COL_SHOWN_IN_LANDSCAPE = 5;
-
 
     private Context mContext;
     private final String LOG_TAG = GridFragment.class.getSimpleName();
@@ -45,7 +42,7 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
     private RecyclerAdapter mRecyclerAdapter;
     private  GridLayoutManager layoutManager;
 
-    private int mPageToFetch = 0;
+    private int mPageToFetch = 0; //TODO: should this be really here?
 
 
     public GridFragment() {
@@ -61,9 +58,8 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
         else
             layoutManager.setSpanCount(COL_SHOWN_IN_LANDSCAPE);
 
-        if (mRecyclerAdapter != null) {
-            Log.d(LOG_TAG, "Calling onResume");
-            sortMovies(mMovieDetailsArray, mContext);
+        if (mRecyclerAdapter != null) { //TODO: This shouldn't be here either
+            FetchUtilities.sortMovies(mMovieDetailsArray, mContext);
             mRecyclerAdapter.notifyDataSetChanged();
 
         }
@@ -83,7 +79,7 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
 
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
-        fetchNextPage();
+        fetchNextPage(); //TODO: this shouldn't be here
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +92,7 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
     }
 
     // Use volley library to fetch movie data in JSON format
+    // TODO: this definitely shouldn't be here
     private void fetchNextPage() {
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         requestQueue.addRequestFinishedListener(this);
@@ -116,7 +113,7 @@ public class GridFragment extends Fragment implements RecyclerAdapter.ItemClickI
     @Override
     public void onResponse(JSONObject response) {
         FetchUtilities.addMoviesFromJSON(response, mMovieDetailsArray);
-        sortMovies(mMovieDetailsArray, mContext);
+        FetchUtilities.sortMovies(mMovieDetailsArray, mContext);
     }
 
     @Override
