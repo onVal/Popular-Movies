@@ -2,16 +2,11 @@ package com.onval.popular_movies.Model;
 
 import android.content.Context;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.onval.popular_movies.GridFragment;
-import com.onval.popular_movies.GridInterface;
 import com.onval.popular_movies.MovieDetail;
-import com.onval.popular_movies.Presenter.PresenterInterface;
 import com.onval.popular_movies.Utilities.Utilities;
 
 import org.json.JSONArray;
@@ -24,38 +19,38 @@ import java.util.ArrayList;
  * Created by gval on 14/06/2017.
  */
 
-public class MovieFetcher implements
-        Response.Listener<JSONObject>, Response.ErrorListener,
-        RequestQueue.RequestFinishedListener<JSONObject> {
+public class MovieFetcher {
     private final String LOG_TAG = MovieFetcher.class.getSimpleName();
 
     private int mPageToFetch;
 
-    private GridInterface gridInterface;
-    private PresenterInterface presenterInterface;
+    // Interfaces for Volley callbacks
+    // I let the Presenter handle them
+    private Response.Listener<JSONObject> onResponseListener;
+    private Response.ErrorListener onErrorListener;
+    private RequestQueue.RequestFinishedListener<JSONObject> requestFinishedListener;
 
-    public MovieFetcher(GridInterface gridInterface, PresenterInterface presenterInterface) {
-        this.gridInterface = gridInterface;
-        this.presenterInterface = presenterInterface;
+    public MovieFetcher(Response.Listener<JSONObject> listener, Response.ErrorListener errorListener,
+                        RequestQueue.RequestFinishedListener<JSONObject> requestFinishedListener) {
+        this.onResponseListener = listener;
+        this.onErrorListener = errorListener;
+        this.requestFinishedListener = requestFinishedListener;
     }
 
     // Use volley library to fetch movie data in JSON format
-    public void fetchNextPage() {
-
-        Context context = ((GridFragment)gridInterface).getContext();
-
+    public void fetchNextPage(Context context) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.addRequestFinishedListener(this);
+        requestQueue.addRequestFinishedListener(requestFinishedListener);
 
         ++mPageToFetch;
 
         String singlePageURL = Utilities.createMoviesUri(mPageToFetch).toString();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                singlePageURL,  // string url
-                null,           // optional JSONObject parameter (?)
-                this,           //onResponse
-                this            //onError
+                singlePageURL,              // string url
+                null,                       // optional JSONObject parameter (?)
+                onResponseListener,         //onResponse
+                onErrorListener             //onError
         );
         requestQueue.add(jsonObjectRequest);
     }
@@ -87,20 +82,5 @@ public class MovieFetcher implements
         } catch (JSONException | NullPointerException exc) {
             exc.printStackTrace();
         }
-    }
-
-    @Override
-    public void onResponse(JSONObject response) {
-        presenterInterface.processJSONResponse(response);
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        gridInterface.showErrorMessage(error);
-    }
-
-    @Override
-    public void onRequestFinished(Request<JSONObject> request) {
-            gridInterface.initializeAdapter();
     }
 }
