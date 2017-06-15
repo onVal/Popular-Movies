@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.onval.popular_movies.Utilities.FetchUtilities;
+import com.onval.popular_movies.Utilities.Utilities;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -35,7 +35,7 @@ public class DetailFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         //Load image to thumbnail
-        Picasso.with(getContext()).load(FetchUtilities.IMAGE_URL + movieDetail.getPosterPath()).into(thumbnail);
+        Picasso.with(getContext()).load(Utilities.IMAGE_URL + movieDetail.getPosterPath()).into(thumbnail);
 
         //Set text elements
         titleView.setText(movieDetail.getTitle());

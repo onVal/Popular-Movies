@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.onval.popular_movies.Utilities.FetchUtilities;
+import com.onval.popular_movies.Utilities.Utilities;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
 
         private void bind(int position) {
 
-            Uri imageUri = FetchUtilities.extractImageUri(mMovieDetails.get(position));
+            Uri imageUri = Utilities.extractImageUri(mMovieDetails.get(position));
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
             Picasso.with(mContext)
