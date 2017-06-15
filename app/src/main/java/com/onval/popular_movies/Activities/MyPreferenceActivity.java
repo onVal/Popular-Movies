@@ -1,10 +1,12 @@
-package com.onval.popular_movies;
+package com.onval.popular_movies.Activities;
 
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
+import com.onval.popular_movies.R;
 
 /**
  * Created by gval on 26/11/16.

@@ -1,4 +1,4 @@
-package com.onval.popular_movies;
+package com.onval.popular_movies.Presenter;
 
 import org.json.JSONObject;
 

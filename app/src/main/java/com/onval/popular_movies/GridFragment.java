@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.onval.popular_movies.Presenter.GridPresenter;
 import com.onval.popular_movies.Utilities.Utilities;
+import com.onval.popular_movies.Activities.DetailActivity;
 
 import java.util.ArrayList;
 

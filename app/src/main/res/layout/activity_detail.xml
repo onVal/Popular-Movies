@@ -4,6 +4,6 @@
     android:id="@+id/activity_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.onval.popular_movies.DetailActivity">
+    tools:context="com.onval.popular_movies.Activities.DetailActivity">
 
 </FrameLayout>

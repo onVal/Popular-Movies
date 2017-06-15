@@ -1,4 +1,4 @@
-package com.onval.popular_movies;
+package com.onval.popular_movies.Model;
 
 import android.content.Context;
 
@@ -8,6 +8,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.onval.popular_movies.GridFragment;
+import com.onval.popular_movies.GridInterface;
+import com.onval.popular_movies.MovieDetail;
+import com.onval.popular_movies.Presenter.PresenterInterface;
 import com.onval.popular_movies.Utilities.Utilities;
 
 import org.json.JSONArray;
@@ -30,7 +34,7 @@ public class MovieFetcher implements
     private GridInterface gridInterface;
     private PresenterInterface presenterInterface;
 
-    MovieFetcher(GridInterface gridInterface, PresenterInterface presenterInterface) {
+    public MovieFetcher(GridInterface gridInterface, PresenterInterface presenterInterface) {
         this.gridInterface = gridInterface;
         this.presenterInterface = presenterInterface;
     }

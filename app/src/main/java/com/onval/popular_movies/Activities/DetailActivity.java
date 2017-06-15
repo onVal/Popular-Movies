@@ -1,7 +1,10 @@
-package com.onval.popular_movies;
+package com.onval.popular_movies.Activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.onval.popular_movies.DetailFragment;
+import com.onval.popular_movies.R;
 
 public class DetailActivity extends AppCompatActivity {
     @Override

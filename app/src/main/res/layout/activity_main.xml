@@ -4,6 +4,6 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.onval.popular_movies.MainActivity">
+    tools:context="com.onval.popular_movies.Activities.MainActivity">
 
 </FrameLayout>

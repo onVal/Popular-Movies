@@ -1,7 +1,12 @@
-package com.onval.popular_movies;
+package com.onval.popular_movies.Presenter;
 
 import android.content.Context;
 
+import com.onval.popular_movies.GridFragment;
+import com.onval.popular_movies.GridInterface;
+import com.onval.popular_movies.MovieDetail;
+import com.onval.popular_movies.Model.MovieFetcher;
+import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
 
 import org.json.JSONObject;
@@ -18,12 +23,12 @@ public class GridPresenter implements PresenterInterface {
     private GridInterface gridInterface;
     private MovieFetcher fetcher;
 
-    GridPresenter(GridInterface view) {
+    public GridPresenter(GridInterface view) {
         gridInterface = view;
         this.fetcher = new MovieFetcher(view, this);
     }
 
-    void fetchMoviesAsync() {
+    public void fetchMoviesAsync() {
         fetcher.fetchNextPage();
     }
 
