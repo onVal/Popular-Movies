@@ -44,6 +44,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textSize="30sp"
         android:textColor="@android:color/white"
+        tools:text="8.5 / 10"
         />
 
     <!--RELEASE DATE-->
@@ -56,18 +57,43 @@
         android:layout_toRightOf="@id/thumbnail"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textColor="@android:color/white"
+        tools:text="13/07/1991"
+
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/favorites"
+        android:layout_below="@id/release_date"
+        android:layout_toRightOf="@id/thumbnail"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:src="@drawable/full_star"
+        tools:src="@drawable/full_star"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/markasfav"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/release_date"
+        android:layout_toRightOf="@id/favorites"
+        android:textColor="@android:color/white"
+        android:text="@string/mark_as_favorite"
+        tools:textColor="@android:color/white"
         />
 
     <!--MOVIE DESCRIPTION (OVERVIEW)-->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/overview"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thumbnail"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_below="@+id/thumbnail"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:textColor="@android:color/white"
-        />
+        tools:text="@string/app_name" />
 
 </RelativeLayout>
