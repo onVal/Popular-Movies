@@ -76,11 +76,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/markasfav"
-        android:layout_marginTop="8dp"
         android:layout_below="@id/release_date"
         android:layout_toRightOf="@id/favorites"
+        android:gravity="center"
         android:textColor="@android:color/white"
         android:text="@string/mark_as_favorite"
+        android:fontFamily="sans-serif-condensed"
         tools:textColor="@android:color/white"
         />
 
