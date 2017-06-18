@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDetailBg"
-    >
+    android:background="@color/colorDetailBg">
 
     <!--TITLE-->
     <TextView
@@ -54,6 +55,30 @@
         android:layout_toRightOf="@id/thumbnail"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:textColor="@android:color/white"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/favorites"
+        android:layout_below="@id/release_date"
+        android:layout_toRightOf="@id/thumbnail"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:src="@drawable/full_star"
+        tools:src="@drawable/full_star"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/markasfav"
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/release_date"
+        android:layout_toRightOf="@id/favorites"
+        android:textColor="@android:color/white"
+        android:text="@string/mark_as_favorite"
+        android:fontFamily="sans-serif-condensed"
+        tools:textColor="@android:color/white"
         />
 
     <!--MOVIE DESCRIPTION (OVERVIEW)-->
