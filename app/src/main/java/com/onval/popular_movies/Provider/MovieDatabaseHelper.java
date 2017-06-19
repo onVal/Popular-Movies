@@ -18,7 +18,8 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String CREATE_TABLE = "CREATE TABLE " + MovieContract.Favorites.TABLE_NAME + " ( " +
                 MovieContract.Favorites._ID + " integer PRIMARY KEY" +
-                MovieContract.Favorites.MOVIE_ID + "integer UNIQUE NOT NULL );";
+                MovieContract.Favorites.MOVIE_ID + " integer UNIQUE NOT NULL " +
+                MovieContract.Favorites.MOVIE_TITLE + " text NOT NULL);";
 
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }

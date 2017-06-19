@@ -3,6 +3,8 @@ package com.onval.popular_movies;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,14 +14,21 @@ import android.support.annotation.Nullable;
  */
 
 public class MovieProvider extends ContentProvider {
+    private SQLiteDatabase database;
+    private SQLiteOpenHelper helper;
+
     @Override
     public boolean onCreate() {
-        return false;
+        helper = new MovieDatabaseHelper(getContext(), MovieContract.DATABASE_NAME, null, MovieContract.DATABASE_VERSION);
+        return true;
     }
 
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] strings, @Nullable String s, @Nullable String[] strings1, @Nullable String s1) {
+        database = helper.getReadableDatabase();
+//        database.query()
+
         return null;
     }
 

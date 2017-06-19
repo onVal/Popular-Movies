@@ -10,14 +10,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.onval.popular_movies.Activities.DetailActivity;
+import com.onval.popular_movies.Activities.MyPreferenceActivity;
 import com.onval.popular_movies.Presenter.GridPresenter;
 import com.onval.popular_movies.Utilities.Utilities;
-import com.onval.popular_movies.Activities.DetailActivity;
 
 import java.util.ArrayList;
 
@@ -62,12 +66,19 @@ public class GridFragment extends Fragment implements
         }
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = getContext();
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.grid_view);
         layoutManager = new GridLayoutManager(mContext, COL_SHOWN_IN_PORTRAIT);
@@ -106,6 +117,24 @@ public class GridFragment extends Fragment implements
         if (mRecyclerAdapter == null)
             mRecyclerAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray, this);
         mRecyclerView.setAdapter(mRecyclerAdapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.main_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.settings) {
+            startActivity(new Intent(getActivity(), MyPreferenceActivity.class));
+            return true;
+        }
+        if (item.getItemId() == R.id.favorites) {
+            presenter.onMenuFavorite();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
 
