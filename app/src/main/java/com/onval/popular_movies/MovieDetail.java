@@ -9,6 +9,7 @@ import android.os.Parcelable;
 
 public class MovieDetail implements Parcelable {
 
+    private int movie_id;
     private String title;
     private String posterPath;
     private String overview;
@@ -33,8 +34,9 @@ public class MovieDetail implements Parcelable {
                 }
             };
 
-    public MovieDetail(String title, String posterPath, String overview,
+    public MovieDetail(int movie_id, String title, String posterPath, String overview,
                        double vote_average, double popularity, String release_date) {
+        this.movie_id = movie_id;
         this.title = title;
         this.posterPath = posterPath;
         this.overview = overview;
@@ -45,6 +47,7 @@ public class MovieDetail implements Parcelable {
 
     // Alternative constructor used in createFromParcel
     private MovieDetail(Parcel parcel) {
+        movie_id = parcel.readInt();
         title = parcel.readString();
         posterPath = parcel.readString();
         overview = parcel.readString();
@@ -60,6 +63,7 @@ public class MovieDetail implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(movie_id);
         parcel.writeString(title);
         parcel.writeString(posterPath);
         parcel.writeString(overview);
@@ -69,6 +73,7 @@ public class MovieDetail implements Parcelable {
     }
 
     // Getters and setters
+    public int getMovie_id() {return movie_id;}
     public String getTitle() {
         return title;
     }

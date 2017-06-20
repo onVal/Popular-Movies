@@ -57,6 +57,7 @@ public class MovieFetcher {
 
     // creates the arrayList of movie details from the json data
     public void addMoviesFromJSON(JSONObject jsonObject, ArrayList<MovieDetail> movieDetails) {
+        int movie_id;
         String title;
         String posterPath; //url path
         String overview;
@@ -70,6 +71,7 @@ public class MovieFetcher {
             for (int i = 0; i < jsonResultsArray.length(); i++) {
                 JSONObject jsonCurrentElement = jsonResultsArray.getJSONObject(i);
 
+                movie_id = jsonCurrentElement.getInt("id");
                 title = jsonCurrentElement.getString("title");
                 posterPath = jsonCurrentElement.getString("poster_path");
                 overview = jsonCurrentElement.getString("overview");
@@ -77,7 +79,8 @@ public class MovieFetcher {
                 popularity = jsonCurrentElement.getDouble("popularity");
                 release_date = jsonCurrentElement.getString("release_date");
 
-                movieDetails.add(new MovieDetail(title, posterPath, overview, vote_average, popularity, release_date));
+                movieDetails.add(new MovieDetail(movie_id, title, posterPath,
+                        overview, vote_average, popularity, release_date));
             }
         } catch (JSONException | NullPointerException exc) {
             exc.printStackTrace();
