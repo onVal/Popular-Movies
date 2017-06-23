@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 
 import com.onval.popular_movies.BuildConfig;
 import com.onval.popular_movies.MovieDetail;
+import com.onval.popular_movies.Provider.MovieContract;
 import com.onval.popular_movies.R;
 
 /**
@@ -59,5 +60,11 @@ public class Utilities {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    public static Uri buildUriWithId(int movieId) {
+        String id = movieId + "";
+        return MovieContract.Favorites.CONTENT_URI.buildUpon()
+                .appendPath(id).build();
     }
 }

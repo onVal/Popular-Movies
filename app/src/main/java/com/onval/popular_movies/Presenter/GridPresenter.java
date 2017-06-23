@@ -77,7 +77,7 @@ public class GridPresenter implements PresenterInterface,
             Collections.sort(movieDetails, new Comparator<MovieDetail>() {
                 @Override
                 public int compare(MovieDetail md1, MovieDetail md2) {
-                    return ((Double) Math.signum((md2.getVote_average() - md1.getVote_average()))).intValue();
+                    return ((Double) Math.signum((md2.getVoteAverage() - md1.getVoteAverage()))).intValue();
                 }
             });
         }

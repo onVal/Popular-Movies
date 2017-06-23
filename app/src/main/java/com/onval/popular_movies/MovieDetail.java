@@ -73,7 +73,7 @@ public class MovieDetail implements Parcelable {
     }
 
     // Getters and setters
-    public int getMovie_id() {return movie_id;}
+    public int getId() {return movie_id;}
     public String getTitle() {
         return title;
     }
@@ -86,7 +86,7 @@ public class MovieDetail implements Parcelable {
         return overview;
     }
 
-    public double getVote_average() {
+    public double getVoteAverage() {
         return vote_average;
     }
     public double getPopularity() { return popularity; }
