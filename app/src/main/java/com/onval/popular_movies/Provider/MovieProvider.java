@@ -60,10 +60,7 @@ public class MovieProvider extends ContentProvider {
             }
         } catch (URISyntaxException exc) {
             exc.printStackTrace();
-//            database.close();
             return null;
-        } finally {
-//            database.close();
         }
 
         return cursor;
@@ -90,10 +87,7 @@ public class MovieProvider extends ContentProvider {
             }
         } catch (URISyntaxException exc) {
             exc.printStackTrace();
-            database.close();
             return null;
-        } finally {
-            database.close();
         }
 
         return uri.buildUpon().appendPath(contentValues.getAsString(MovieContract.Favorites._ID)).build();
@@ -117,10 +111,7 @@ public class MovieProvider extends ContentProvider {
             }
         } catch (URISyntaxException exc) {
             exc.printStackTrace();
-            database.close();
             return -1;
-        } finally {
-            database.close();
         }
 
         return rowsAffected;
