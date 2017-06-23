@@ -60,10 +60,10 @@ public class MovieProvider extends ContentProvider {
             }
         } catch (URISyntaxException exc) {
             exc.printStackTrace();
-            database.close();
+//            database.close();
             return null;
         } finally {
-            database.close();
+//            database.close();
         }
 
         return cursor;

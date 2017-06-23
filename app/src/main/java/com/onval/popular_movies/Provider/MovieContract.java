@@ -11,7 +11,7 @@ public class MovieContract {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "movies.db";
 
-    public static final String AUTHORITY = "com.onval.popular_movies";
+    public static final String AUTHORITY = "com.onval.popular_movies.Provider";
 
     public static final Uri BASE_CONTENT_URI =
             Uri.parse("content://" + AUTHORITY);

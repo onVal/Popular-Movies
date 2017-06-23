@@ -19,7 +19,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String CREATE_TABLE = "CREATE TABLE " + MovieContract.Favorites.TABLE_NAME + " ( " +
-                MovieContract.Favorites._ID + " integer PRIMARY KEY " +
+                MovieContract.Favorites._ID + " integer PRIMARY KEY, " +
                 MovieContract.Favorites.MOVIE_TITLE + " text NOT NULL);";
 
         sqLiteDatabase.execSQL(CREATE_TABLE);
@@ -30,7 +30,7 @@ public class MovieDatabaseHelper extends SQLiteOpenHelper {
         Log.w(LOG_TAG, "Upgrading database from version " + oldVersion + " to " +
                 newVersion + ". OLD DATA WILL BE DESTROYED");
         // Drop the table
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieContract.Favorites.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MovieContract.Favorites.TABLE_NAME + ";");
 
         // re-create database
         onCreate(sqLiteDatabase);

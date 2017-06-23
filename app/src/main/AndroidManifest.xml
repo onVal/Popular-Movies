@@ -23,6 +23,10 @@
             android:parentActivityName="com.onval.popular_movies.Activities.MainActivity" />
         <activity android:name="com.onval.popular_movies.Activities.MyPreferenceActivity"
             android:parentActivityName="com.onval.popular_movies.Activities.MainActivity" />
+        <provider
+            android:authorities="com.onval.popular_movies.Provider"
+            android:name=".Provider.MovieProvider"
+            />
     </application>
 
 </manifest>
