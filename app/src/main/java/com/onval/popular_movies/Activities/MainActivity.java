@@ -3,6 +3,7 @@ package com.onval.popular_movies.Activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.stetho.Stetho;
 import com.onval.popular_movies.GridFragment;
 import com.onval.popular_movies.NoInternetFragment;
 import com.onval.popular_movies.R;
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
                         .add(R.id.activity_main, new NoInternetFragment())
                         .commit();
             }
+
+            Stetho.initializeWithDefaults(getApplicationContext());
         }
     }
 }
