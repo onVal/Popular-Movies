@@ -3,6 +3,7 @@ package com.onval.popular_movies;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.onval.popular_movies.Activities.DetailActivity;
 import com.onval.popular_movies.Activities.MyPreferenceActivity;
 import com.onval.popular_movies.Presenter.GridPresenter;
+import com.onval.popular_movies.Provider.MovieContract;
 import com.onval.popular_movies.Utilities.Utilities;
 
 import java.util.ArrayList;
@@ -38,11 +40,14 @@ public class GridFragment extends Fragment implements
     private Context mContext;
 
     public ArrayList<MovieDetail> mMovieDetailsArray = new ArrayList<>();
+    public ArrayList<MovieDetail> favMoviesArray = new ArrayList<>();
 
     @BindView(R.id.grid_view) RecyclerView mRecyclerView;
     @BindView(R.id.fab) FloatingActionButton loadMoreMoviesFab;
 
-    public RecyclerAdapter mRecyclerAdapter;
+    private RecyclerAdapter mRecyclerAdapter;
+    private RecyclerAdapter favoritesAdapter;
+
     private GridLayoutManager layoutManager;
 
     private GridPresenter presenter;
@@ -88,7 +93,7 @@ public class GridFragment extends Fragment implements
         loadMoreMoviesFab.setOnClickListener(this);
 
         presenter = new GridPresenter(this);
-        presenter.fetchMoviesAsync(); //before there was fetchNextPage() TODO: to implement
+        presenter.fetchMoviesAsync();
 
         return rootView;
     }
@@ -130,8 +135,26 @@ public class GridFragment extends Fragment implements
             startActivity(new Intent(getActivity(), MyPreferenceActivity.class));
             return true;
         }
-        if (item.getItemId() == R.id.favorites) {
-            presenter.onMenuFavorite();
+        if (item.getItemId() == R.id.favorites) { //TODO: THIS IS GARBAGE!
+//            presenter.onMenuFavorite();
+            Cursor c = getContext().getContentResolver().query(MovieContract.Movies.CONTENT_URI, null, null, null, null);
+
+            if (c != null && c.moveToFirst()) {
+                do {
+                    int columnId = c.getColumnIndexOrThrow(MovieContract.Movies._ID);
+                    int movieId = c.getInt(columnId);
+
+//                    mMovieDetailsArray.get()
+
+//                    favMoviesArray.add();
+                } while (c.moveToNext());
+            }
+
+            if (favoritesAdapter == null) {
+                favoritesAdapter = new RecyclerAdapter(getContext(), favMoviesArray, this);
+            }
+
+            mRecyclerView.swapAdapter(favoritesAdapter, true);
         }
 
         return super.onOptionsItemSelected(item);

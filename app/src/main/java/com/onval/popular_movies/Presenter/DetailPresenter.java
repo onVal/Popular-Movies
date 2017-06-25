@@ -35,9 +35,9 @@ public class DetailPresenter implements DetailPresenterInterface {
             view.onRemoveFavorite();
         } else { // add it as a favorite
             ContentValues contentValues = new ContentValues();
-            contentValues.put(MovieContract.Favorites._ID, movie.getId());
-            contentValues.put(MovieContract.Favorites.MOVIE_TITLE, movie.getTitle());
-            context.getContentResolver().insert(MovieContract.Favorites.CONTENT_URI, contentValues);
+            contentValues.put(MovieContract.Movies._ID, movie.getId());
+            contentValues.put(MovieContract.Movies.TITLE_COLUMN, movie.getTitle());
+            context.getContentResolver().insert(MovieContract.Movies.CONTENT_URI, contentValues);
             view.onMarkFavorite();
         }
         cursor.close();

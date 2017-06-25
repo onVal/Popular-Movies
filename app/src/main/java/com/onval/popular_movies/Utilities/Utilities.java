@@ -64,7 +64,7 @@ public class Utilities {
 
     public static Uri buildUriWithId(int movieId) {
         String id = movieId + "";
-        return MovieContract.Favorites.CONTENT_URI.buildUpon()
+        return MovieContract.Movies.CONTENT_URI.buildUpon()
                 .appendPath(id).build();
     }
 }
