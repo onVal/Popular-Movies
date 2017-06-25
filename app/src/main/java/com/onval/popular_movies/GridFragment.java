@@ -137,11 +137,11 @@ public class GridFragment extends Fragment implements
         }
         if (item.getItemId() == R.id.favorites) { //TODO: THIS IS GARBAGE!
 //            presenter.onMenuFavorite();
-            Cursor c = getContext().getContentResolver().query(MovieContract.Movies.CONTENT_URI, null, null, null, null);
+            Cursor c = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
 
             if (c != null && c.moveToFirst()) {
                 do {
-                    int columnId = c.getColumnIndexOrThrow(MovieContract.Movies._ID);
+                    int columnId = c.getColumnIndexOrThrow(MovieContract.Favorites._ID);
                     int movieId = c.getInt(columnId);
 
 //                    mMovieDetailsArray.get()

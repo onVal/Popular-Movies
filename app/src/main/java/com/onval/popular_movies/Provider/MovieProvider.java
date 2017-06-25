@@ -48,12 +48,12 @@ public class MovieProvider extends ContentProvider {
         try {
             switch (URIMatcher.match(uri)) {
                 case FAVORITES:
-                    cursor = database.query(true, MovieContract.Movies.TABLE_NAME, null, null, null, null, null, null, null);
+                    cursor = database.query(true, MovieContract.Favorites.TABLE_NAME, null, null, null, null, null, null, null);
                     break;
                 case FAV_WITH_ID:
                     String movie_id = uri.getLastPathSegment(); //extract the movie_id from uri
-                    cursor = database.query(true, MovieContract.Movies.TABLE_NAME, null,
-                            MovieContract.Movies._ID + " = " + movie_id, null, null, null, null, null);
+                    cursor = database.query(true, MovieContract.Favorites.TABLE_NAME, null,
+                            MovieContract.Favorites._ID + " = " + movie_id, null, null, null, null, null);
                     break;
                 default:
                     throw new URISyntaxException(uri.toString(), "Uri not valid!");
@@ -80,7 +80,7 @@ public class MovieProvider extends ContentProvider {
         try {
             switch (URIMatcher.match(uri)) {
                 case FAVORITES:
-                    database.insert(MovieContract.Movies.TABLE_NAME, null, contentValues);
+                    database.insert(MovieContract.Favorites.TABLE_NAME, null, contentValues);
                     break;
                 default:
                     throw new URISyntaxException(uri.toString(), "Uri not valid!");
@@ -90,7 +90,7 @@ public class MovieProvider extends ContentProvider {
             return null;
         }
 
-        return uri.buildUpon().appendPath(contentValues.getAsString(MovieContract.Movies._ID)).build();
+        return uri.buildUpon().appendPath(contentValues.getAsString(MovieContract.Favorites._ID)).build();
     }
 
     @Override
@@ -102,8 +102,8 @@ public class MovieProvider extends ContentProvider {
             switch (URIMatcher.match(uri)) {
                 case FAV_WITH_ID: //delete single element
                     String movie_id = uri.getLastPathSegment();
-                    rowsAffected = database.delete(MovieContract.Movies.TABLE_NAME,
-                                MovieContract.Movies._ID + " = " + movie_id,
+                    rowsAffected = database.delete(MovieContract.Favorites.TABLE_NAME,
+                                MovieContract.Favorites._ID + " = " + movie_id,
                                 null);
                     break;
                 default:
