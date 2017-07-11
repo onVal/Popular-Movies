@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,16 +38,21 @@ public class GridFragment extends Fragment implements
     private final int COL_SHOWN_IN_PORTRAIT = 3;
     private final int COL_SHOWN_IN_LANDSCAPE = 5;
 
+    private boolean GridIsShowingFavorites;
+
     private Context mContext;
 
+    //Data
     public ArrayList<MovieDetail> mMovieDetailsArray = new ArrayList<>();
-    public ArrayList<MovieDetail> favMoviesArray = new ArrayList<>();
+    public Cursor favCursor;
 
+    //Views
     @BindView(R.id.grid_view) RecyclerView mRecyclerView;
     @BindView(R.id.fab) FloatingActionButton loadMoreMoviesFab;
 
-    private RecyclerAdapter mRecyclerAdapter;
-    private RecyclerAdapter favoritesAdapter;
+    //Recyclers
+    private RecyclerAdapter moviesAdapter;
+    private CursorRecyclerAdapter favoritesAdapter;
 
     private GridLayoutManager layoutManager;
 
@@ -65,9 +71,9 @@ public class GridFragment extends Fragment implements
         else
             layoutManager.setSpanCount(COL_SHOWN_IN_LANDSCAPE);
 
-        if (mRecyclerAdapter != null) {
+        if (moviesAdapter != null) {
             presenter.sortMovies(mContext, mMovieDetailsArray, Utilities.getSortOption(mContext));
-            mRecyclerAdapter.notifyDataSetChanged(); //TODO: is this line necessary?
+            moviesAdapter.notifyDataSetChanged(); //TODO: is this line necessary?
         }
     }
 
@@ -95,6 +101,11 @@ public class GridFragment extends Fragment implements
         presenter = new GridPresenter(this);
         presenter.fetchMoviesAsync();
 
+//        favCursor = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
+//        favoritesAdapter = new CursorRecyclerAdapter(getContext(), favCursor);
+        mRecyclerView.setAdapter(moviesAdapter);
+//        GridIsShowingFavorites = true;
+
         return rootView;
     }
 
@@ -119,9 +130,9 @@ public class GridFragment extends Fragment implements
 
     @Override
     public void initializeAdapter() {
-        if (mRecyclerAdapter == null)
-            mRecyclerAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray, this);
-        mRecyclerView.setAdapter(mRecyclerAdapter);
+        if (moviesAdapter == null)
+            moviesAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray, this);
+        mRecyclerView.setAdapter(moviesAdapter);
     }
 
     @Override
@@ -135,29 +146,26 @@ public class GridFragment extends Fragment implements
             startActivity(new Intent(getActivity(), MyPreferenceActivity.class));
             return true;
         }
-        if (item.getItemId() == R.id.favorites) { //TODO: THIS IS GARBAGE!
-//            presenter.onMenuFavorite();
-            Cursor c = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
-
-            if (c != null && c.moveToFirst()) {
-                do {
-                    int columnId = c.getColumnIndexOrThrow(MovieContract.Favorites._ID);
-                    int movieId = c.getInt(columnId);
-
-//                    mMovieDetailsArray.get()
-
-//                    favMoviesArray.add();
-                } while (c.moveToNext());
-            }
-
-            if (favoritesAdapter == null) {
-                favoritesAdapter = new RecyclerAdapter(getContext(), favMoviesArray, this);
-            }
-
-            mRecyclerView.swapAdapter(favoritesAdapter, true);
+        else if (item.getItemId() == R.id.favorites) {
+            favoritesMenuClicked();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-}
+
+    private void favoritesMenuClicked() {
+        if (GridIsShowingFavorites) {
+            mRecyclerView.setAdapter(moviesAdapter);
+            GridIsShowingFavorites = false;
+        } else {
+            favCursor = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
+            Log.d("n of items", favCursor.getCount() + "");
+            favoritesAdapter = new CursorRecyclerAdapter(getContext(), favCursor);
+
+            mRecyclerView.setAdapter(favoritesAdapter);
+            GridIsShowingFavorites = true;
+        }
+    }
+ }
 

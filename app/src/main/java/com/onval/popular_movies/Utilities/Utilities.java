@@ -47,6 +47,12 @@ public class Utilities {
                 .build();
     }
 
+    public static Uri createImageUri(String posterpath) {
+        return Uri.parse(IMAGE_URL).buildUpon()
+                .appendEncodedPath(posterpath)
+                .build();
+    }
+
     // Get sort option as a String from the default shared preferences
     public static String getSortOption(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context)
