@@ -101,10 +101,7 @@ public class GridFragment extends Fragment implements
         presenter = new GridPresenter(this);
         presenter.fetchMoviesAsync();
 
-//        favCursor = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
-//        favoritesAdapter = new CursorRecyclerAdapter(getContext(), favCursor);
         mRecyclerView.setAdapter(moviesAdapter);
-//        GridIsShowingFavorites = true;
 
         return rootView;
     }
@@ -148,6 +145,7 @@ public class GridFragment extends Fragment implements
         }
         else if (item.getItemId() == R.id.favorites) {
             favoritesMenuClicked();
+            toggleFavoriteMenuItemTitle(item);
             return true;
         }
 
@@ -158,7 +156,8 @@ public class GridFragment extends Fragment implements
         if (GridIsShowingFavorites) {
             mRecyclerView.setAdapter(moviesAdapter);
             GridIsShowingFavorites = false;
-        } else {
+        }
+        else {
             favCursor = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
             Log.d("n of items", favCursor.getCount() + "");
             favoritesAdapter = new CursorRecyclerAdapter(getContext(), favCursor);
@@ -166,6 +165,13 @@ public class GridFragment extends Fragment implements
             mRecyclerView.setAdapter(favoritesAdapter);
             GridIsShowingFavorites = true;
         }
+    }
+
+    private void toggleFavoriteMenuItemTitle(MenuItem item) {
+        if (item.getTitle().equals(getString(R.string.show_favorites)))
+            item.setTitle(getString(R.string.show_movies));
+        else
+            item.setTitle(getString(R.string.show_favorites));
     }
  }
 
