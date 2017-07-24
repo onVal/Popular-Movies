@@ -9,4 +9,5 @@ import com.android.volley.VolleyError;
 public interface GridInterface {
     void showErrorMessage(VolleyError error);
     void initializeAdapter();
+    void favoritesMenuClicked();
 }

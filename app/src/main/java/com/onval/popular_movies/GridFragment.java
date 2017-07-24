@@ -146,13 +146,15 @@ public class GridFragment extends Fragment implements
         else if (item.getItemId() == R.id.favorites) {
             favoritesMenuClicked();
             toggleFavoriteMenuItemTitle(item);
+            toggleTitleBar(item);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void favoritesMenuClicked() {
+    @Override
+    public void favoritesMenuClicked() {
         if (GridIsShowingFavorites) {
             mRecyclerView.setAdapter(moviesAdapter);
             GridIsShowingFavorites = false;
@@ -173,5 +175,13 @@ public class GridFragment extends Fragment implements
         else
             item.setTitle(getString(R.string.show_favorites));
     }
- }
+
+    private void toggleTitleBar(MenuItem item) {
+        if (item.getTitle().equals(getString(R.string.show_favorites)))
+            getActivity().setTitle(R.string.app_name);
+        else
+            getActivity().setTitle(R.string.fav_title);
+    }
+
+}
 
