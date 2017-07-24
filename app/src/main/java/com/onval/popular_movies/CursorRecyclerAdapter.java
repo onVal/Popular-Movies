@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -20,12 +21,13 @@ public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAd
     private Context context;
     private Cursor cursor;
     private int imageColumnIndex;
-//    private ItemClickInterface mInterface;
+    private ItemClickInterface mInterface;
 
-    CursorRecyclerAdapter(Context context, Cursor cursor) {
+    CursorRecyclerAdapter(Context context, Cursor cursor, ItemClickInterface mInterface) {
         this.context = context;
         this.cursor = cursor;
         this.cursor.moveToFirst();
+        this.mInterface = mInterface;
         imageColumnIndex = cursor.getColumnIndex(MovieContract.Favorites.POSTERPATH_COLUMN);
     }
 
@@ -36,8 +38,14 @@ public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAd
     }
 
     @Override
-    public void onBindViewHolder(FavPosterHolder holder, int position) {
+    public void onBindViewHolder(final FavPosterHolder holder, int position) {
         holder.bind(position);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mInterface.onItemClick(holder);
+            }
+        });
     }
 
     @Override
@@ -52,12 +60,12 @@ public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAd
         FavPosterHolder(ImageView imageView) {
             super(imageView);
             this.imageView = imageView;
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         }
 
         private void bind(int position) {
             if (cursor.moveToPosition(position)) {
                 Uri imageUri = Utilities.createImageUri((cursor.getString(imageColumnIndex)));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
                 Picasso.with(context)
                         .load(imageUri)
@@ -65,9 +73,4 @@ public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAd
             }
         }
     }
-
-//    //Interface
-//    public interface ItemClickInterface {
-//        void onItemClick(MoviePosterHolder holder);
-//    }
 }

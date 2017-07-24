@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 
 public class GridFragment extends Fragment implements
-        GridInterface, View.OnClickListener, RecyclerAdapter.ItemClickInterface {
+        GridInterface, View.OnClickListener, ItemClickInterface {
 
     private final String LOG_TAG = GridFragment.class.getSimpleName();
 
@@ -107,7 +107,7 @@ public class GridFragment extends Fragment implements
     }
 
     @Override
-    public void onItemClick(RecyclerAdapter.MoviePosterHolder holder) {
+    public void onItemClick(RecyclerView.ViewHolder holder) {
         int position = holder.getAdapterPosition();
         Intent intent = new Intent(mContext, DetailActivity.class);
         intent.putExtra(MovieDetail.MOVIE_DETAILS_ID, mMovieDetailsArray.get(position));
@@ -162,7 +162,7 @@ public class GridFragment extends Fragment implements
         else {
             favCursor = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
             Log.d("n of items", favCursor.getCount() + "");
-            favoritesAdapter = new CursorRecyclerAdapter(getContext(), favCursor);
+            favoritesAdapter = new CursorRecyclerAdapter(getContext(), favCursor, this);
 
             mRecyclerView.setAdapter(favoritesAdapter);
             GridIsShowingFavorites = true;

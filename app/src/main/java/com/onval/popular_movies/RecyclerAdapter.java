@@ -72,9 +72,4 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
 
         }
     }
-
-    //Interface
-    public interface ItemClickInterface {
-        void onItemClick(MoviePosterHolder holder);
-    }
 }
