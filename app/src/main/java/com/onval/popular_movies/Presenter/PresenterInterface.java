@@ -8,5 +8,4 @@ import org.json.JSONObject;
 
 public interface PresenterInterface {
     void processJSONResponse(JSONObject response);
-    void onMenuFavorite();
 }

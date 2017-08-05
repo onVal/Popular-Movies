@@ -168,7 +168,7 @@ public class GridFragment extends Fragment implements
             startActivity(new Intent(getActivity(), MyPreferenceActivity.class));
             return true;
         }
-        else if (item.getItemId() == R.id.favorites) {
+        if (item.getItemId() == R.id.favorites) {
             favoritesMenuClicked();
             toggleFavoriteMenuItemTitle(item);
             toggleTitleBar(item);

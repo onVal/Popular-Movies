@@ -66,11 +66,6 @@ public class GridPresenter implements PresenterInterface,
         gridInterface.initializeAdapter();
     }
 
-    @Override
-    public void onMenuFavorite() {
-
-    }
-
     public void sortMovies(Context context, ArrayList<MovieDetail> movieDetails, String sortOption) {
 
         if (sortOption.equals(context.getString(R.string.pref_ratings_value))) {

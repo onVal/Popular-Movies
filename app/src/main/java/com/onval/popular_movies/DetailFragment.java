@@ -21,7 +21,7 @@ import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailFragment extends Fragment implements DetailView {
+public class DetailFragment extends Fragment implements DetailInterface {
     @BindView(R.id.thumbnail)       ImageView thumbnail;
     @BindView(R.id.title)           TextView titleView;
     @BindView(R.id.release_date)    TextView releaseDateView;

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.onval.popular_movies.DetailView;
+import com.onval.popular_movies.DetailInterface;
 import com.onval.popular_movies.MovieDetail;
 import com.onval.popular_movies.Provider.MovieContract;
 import com.onval.popular_movies.Utilities.Utilities;
@@ -17,8 +17,8 @@ import com.onval.popular_movies.Utilities.Utilities;
 public class DetailPresenter implements DetailPresenterInterface {
     private final static String TAG = DetailPresenter.class.getSimpleName();
 
-    private DetailView view;
-    public DetailPresenter(DetailView view) {
+    private DetailInterface view;
+    public DetailPresenter(DetailInterface view) {
         this.view = view;
     }
 
