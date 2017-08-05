@@ -3,6 +3,7 @@ package com.onval.popular_movies;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
  */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MoviePosterHolder> {
+    private final String LOG_TAG = RecyclerAdapter.class.getSimpleName();
+
     private Context mContext;
     private ArrayList<MovieDetail> mMovieDetails;
     private ItemClickInterface mInterface;
@@ -30,6 +33,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
 
     @Override
     public MoviePosterHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.d(LOG_TAG, "onCreateViewHolder() called");
         Context context = parent.getContext();
         ImageView imageView = (ImageView) LayoutInflater.from(context).inflate(R.layout.movie_image, null);
 
@@ -38,6 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
 
     @Override
     public void onBindViewHolder(final MoviePosterHolder holder, int position) {
+        Log.d(LOG_TAG, "onBindViewHolder() called");
         holder.bind(position);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
 
     @Override
     public int getItemCount() {
+        Log.d(LOG_TAG, "getItemCount() called");
         return mMovieDetails.size();
     }
 

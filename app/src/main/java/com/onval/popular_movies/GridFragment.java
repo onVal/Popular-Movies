@@ -107,11 +107,36 @@ public class GridFragment extends Fragment implements
     }
 
     @Override
-    public void onItemClick(RecyclerView.ViewHolder holder) {
+    public void onItemClick(RecyclerAdapter.MoviePosterHolder holder) {
         int position = holder.getAdapterPosition();
         Intent intent = new Intent(mContext, DetailActivity.class);
         intent.putExtra(MovieDetail.MOVIE_DETAILS_ID, mMovieDetailsArray.get(position));
         startActivity(intent);
+    }
+
+    @Override
+    public void onItemClick(CursorRecyclerAdapter.FavPosterHolder holder) {
+        int position = holder.getAdapterPosition();
+        Intent intent = new Intent(mContext, DetailActivity.class);
+
+        MovieDetail movieDetail = movieDetailFromCursor(favCursor, position);
+
+        intent.putExtra(MovieDetail.MOVIE_DETAILS_ID, movieDetail);
+        startActivity(intent);
+    }
+
+    MovieDetail movieDetailFromCursor(Cursor cursor, int position) {
+        cursor.moveToPosition(position);
+
+        return new MovieDetail(
+                cursor.getInt(cursor.getColumnIndex(MovieContract.Favorites._ID)),
+                cursor.getString(cursor.getColumnIndex(MovieContract.Favorites.TITLE_COLUMN)),
+                cursor.getString(cursor.getColumnIndex(MovieContract.Favorites.POSTERPATH_COLUMN)),
+                cursor.getString(cursor.getColumnIndex(MovieContract.Favorites.OVERVIEW_COLUMN)),
+                cursor.getDouble(cursor.getColumnIndex(MovieContract.Favorites.VOTE_AVG_COLUMN)),
+                cursor.getDouble(cursor.getColumnIndex(MovieContract.Favorites.POPULARITY_COLUMN)),
+                cursor.getString(cursor.getColumnIndex(MovieContract.Favorites.RELEASE_DATE_COLUMN))
+        );
     }
 
     //onClick for FAB

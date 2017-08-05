@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,8 @@ public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAd
             if (cursor.moveToPosition(position)) {
                 Uri imageUri = Utilities.createImageUri((cursor.getString(imageColumnIndex)));
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                Log.d("Binding", "Has on clicklistener" + imageView.hasOnClickListeners());
 
                 Picasso.with(context)
                         .load(imageUri)
