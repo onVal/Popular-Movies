@@ -24,8 +24,8 @@
                             \n\nMake sure your internet connection is active and try again</string>
     <string name="refresh_btn_txt">RETRY</string>
 
-    <string name="mark_as_favorite">Mark\nas favorite</string>
-    <string name="rm_from_favorite">Remove\nfrom favorite</string>
+    <string name="mark_as_favorite">Not in\nyour favorites</string>
+    <string name="rm_from_favorite">This is\na favorite!</string>
 
 
 </resources>
