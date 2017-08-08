@@ -24,8 +24,20 @@
                             \n\nMake sure your internet connection is active and try again</string>
     <string name="refresh_btn_txt">RETRY</string>
 
+    <!-- Movie detail related strings -->
     <string name="mark_as_favorite">Not in\nyour favorites</string>
     <string name="rm_from_favorite">This is\na favorite!</string>
+
+
+    <!--Used to show description in preview mode-->
+    <string name="lorem_ipsum"> Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+        \nsed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+        \nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        \nDuis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. </string>
+
+    <string name="detail_trailers_title">Trailers:</string>
+
+    <string name="show_reviews">Show reviews</string>
 
 
 </resources>

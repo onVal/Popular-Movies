@@ -16,8 +16,7 @@
         android:gravity="center"
         android:background="@color/colorTitleBg"
         android:textColor="@android:color/white"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:padding="@dimen/activity_vertical_margin"
         tools:text="Titanic"
         />
 
@@ -30,7 +29,12 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:scrollbars="vertical"
-        />
+        tools:src="@drawable/full_star"
+        tools:layout_alignRight="@+id/trailer_title"
+        tools:layout_alignEnd="@+id/trailer_title"
+        tools:layout_alignLeft="@+id/overview"
+        tools:layout_alignStart="@+id/overview"
+        tools:layout_alignBottom="@+id/markasfav" />
 
 
     <!--RATING (VOTE AVERAGE)-->
@@ -95,6 +99,55 @@
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:textColor="@android:color/white"
-        tools:text="@string/app_name" />
+        tools:text="@string/lorem_ipsum" />
 
+    <View
+        android:id="@+id/detail_separator"
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_below="@+id/overview"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:layout_margin="@dimen/activity_horizontal_margin" />
+
+    <TextView
+        android:id="@+id/trailer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/detail_trailers_title"
+        android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/detail_separator"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        />
+
+    <LinearLayout
+        android:id="@+id/trailers_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/trailer_title"
+        />
+
+    <!--<ListView-->
+        <!--android:id="@+id/trailer_list"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/trailer_title"-->
+        <!--tools:listitem="@layout/trailer_item"-->
+        <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+
+        <!--/>-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/show_reviews"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/show_reviews"-->
+        <!--android:textAllCaps="true"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:clickable="true"-->
+        <!--android:layout_marginLeft="@dimen/activity_horizontal_margin"-->
+        <!--android:layout_below="@id/trailer_list"-->
+        <!--/>-->
 </RelativeLayout>

@@ -7,4 +7,6 @@ package com.onval.popular_movies;
 public interface DetailInterface {
     void onMarkFavorite();
     void onRemoveFavorite();
+    void onLoadTrailer(String name, String key);
+    void onLoadReviews();
 }

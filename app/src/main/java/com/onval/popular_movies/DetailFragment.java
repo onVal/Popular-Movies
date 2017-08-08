@@ -2,8 +2,10 @@ package com.onval.popular_movies;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.onval.popular_movies.Presenter.DetailPresenter;
@@ -29,6 +32,7 @@ public class DetailFragment extends Fragment implements DetailInterface {
     @BindView(R.id.vote_average)    TextView voteAverage;
     @BindView(R.id.favorites)       ImageView favoritesStar;
     @BindView(R.id.markasfav)       TextView favoritesText;
+    @BindView(R.id.trailers_list)   LinearLayout trailerList;
 
     private Context context;
     private DetailPresenter presenter;
@@ -68,6 +72,7 @@ public class DetailFragment extends Fragment implements DetailInterface {
         overview.setMovementMethod(new ScrollingMovementMethod());
         voteAverage.setText(String.valueOf(movieDetail.getVoteAverage()) + " / 10");
 
+        //Update fav text and icons accordingly and set listener
         onLoadFavoriteUI();
 
         favoritesStar.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +82,56 @@ public class DetailFragment extends Fragment implements DetailInterface {
             }
         });
 
+        //Load trailers dynamically making a call to the server
+        presenter.loadTrailers(context, movieDetail);
+
+        //noinspection RestrictedApi
+//        LinearLayout trailerList = (LinearLayout) rootView.findViewById(R.id.trailers_list);
+//
+//        View trailer = inflater.inflate(R.layout.trailer_item, trailerList, true);
+//        View trailer2 = inflater.inflate(R.layout.trailer_item, trailerList, true);
+
+
+//        trailerList.addView(trailer);
+//        trailerList.addView(trailer2);
+
+
+//        TextView reviews = (TextView) container.findViewById(R.id.show_reviews);
+//        reviews.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                presenter.loadReviews(context, movieDetail);
+//            }
+//        });
+
         return rootView;
+    }
+
+    @Override
+    public void onLoadTrailer(String name, final String key) {
+        //noinspection RestrictedApi
+        View trailer = getLayoutInflater(null).inflate(R.layout.trailer_item, trailerList, false);
+        TextView trailerName = (TextView) trailer.findViewById(R.id.trailer_title_id);
+        trailerName.setText(name);
+
+        trailerList.addView(trailer);
+
+        trailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri uri = Utilities.createYoutubeUri(key);
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(uri);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    public void onLoadReviews() {
+
     }
 
     @Override

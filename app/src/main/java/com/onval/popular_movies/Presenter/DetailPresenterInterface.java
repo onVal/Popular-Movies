@@ -10,4 +10,6 @@ import com.onval.popular_movies.MovieDetail;
 
 public interface DetailPresenterInterface {
     void favoriteClicked(Context context, MovieDetail movie);
+    void loadTrailers(Context context, MovieDetail movie);
+    void loadReviews(Context context, MovieDetail movie);
 }

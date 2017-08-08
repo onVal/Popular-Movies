@@ -35,13 +35,14 @@ public class GridPresenter implements PresenterInterface,
         fetcher = new MovieFetcher(this, this, this);
     }
 
+    @Override
     public void fetchMoviesAsync() {
         Context context = ((GridFragment) gridInterface).getContext();
         fetcher.fetchNextPage(context);
     }
 
     @Override
-    public void processJSONResponse(JSONObject response) {
+    public void onResponse(JSONObject response) {
         GridFragment view = (GridFragment) gridInterface;
         Context context = view.getContext();
 
@@ -49,11 +50,6 @@ public class GridPresenter implements PresenterInterface,
 
         String sortOption = Utilities.getSortOption(context);
         sortMovies(context, view.mMovieDetailsArray, sortOption);
-    }
-
-    @Override
-    public void onResponse(JSONObject response) {
-        processJSONResponse(response);
     }
 
     @Override

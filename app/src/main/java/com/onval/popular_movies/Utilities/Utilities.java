@@ -32,6 +32,12 @@ public class Utilities {
     //Complete URL to retrieve the images
     final static public String IMAGE_URL = BASE_IMAGE_URL + IMAGE_SIZE;
 
+    //Base URL for Movie details
+    final static private String BASE_URL_MOVIE_DETAILS = "https://api.themoviedb.org/3/movie";
+
+    //Base URL for Youtube Trailers
+    final static private String BASE_YOUTUBE_URL = "https://www.youtube.com/watch?v=";
+
     // Return the uri for fetching movies information in JSON format
     public static Uri createMoviesUri(int pageNumber) {
         return Uri.parse(BASE_URL).buildUpon()
@@ -50,6 +56,32 @@ public class Utilities {
     public static Uri createImageUri(String posterpath) {
         return Uri.parse(IMAGE_URL).buildUpon()
                 .appendEncodedPath(posterpath)
+                .build();
+    }
+
+    public static Uri createTrailerUri(int movie_id) {
+        String movieIdString = String.valueOf(movie_id);
+
+        return Uri.parse(BASE_URL_MOVIE_DETAILS).buildUpon()
+                .appendEncodedPath(movieIdString)
+                .appendEncodedPath("videos")
+                .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
+                .build();
+    }
+
+    public static Uri createReviewUri(int movie_id) {
+        String movieIdString = String.valueOf(movie_id);
+
+        return Uri.parse(BASE_URL_MOVIE_DETAILS).buildUpon()
+                .appendEncodedPath(movieIdString)
+                .appendEncodedPath("reviews")
+                .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
+                .build();
+    }
+
+    public static Uri createYoutubeUri(String key) {
+        return Uri.parse(BASE_YOUTUBE_URL).buildUpon()
+                .appendEncodedPath(key)
                 .build();
     }
 

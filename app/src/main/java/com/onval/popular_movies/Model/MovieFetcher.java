@@ -1,6 +1,7 @@
 package com.onval.popular_movies.Model;
 
 import android.content.Context;
+import android.net.Uri;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -85,5 +86,17 @@ public class MovieFetcher {
         } catch (JSONException | NullPointerException exc) {
             exc.printStackTrace();
         }
+    }
+
+    public void fetchFromServer(Context context, Uri uri) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                uri.toString(),              // string url
+                null,                       // optional JSONObject parameter (?)
+                onResponseListener,         //onResponse
+                onErrorListener             //onError
+        );
+        requestQueue.add(jsonObjectRequest);
     }
 }
