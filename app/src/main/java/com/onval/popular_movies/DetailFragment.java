@@ -36,6 +36,9 @@ public class DetailFragment extends Fragment implements DetailInterface {
     @BindView(R.id.reviews_list)    LinearLayout reviewList;
     @BindView(R.id.show_reviews)    TextView showReview;
 
+    private boolean reviewsHaveBeenLoaded;
+    private boolean reviewsAreVisible;
+
     private Context context;
     private DetailPresenter presenter;
     private MovieDetail movieDetail;
@@ -91,11 +94,37 @@ public class DetailFragment extends Fragment implements DetailInterface {
         showReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.loadReviews(context, movieDetail);
+                if (!reviewsHaveBeenLoaded) {
+                    presenter.loadReviews(context, movieDetail);
+                    reviewsHaveBeenLoaded = true; //this will stay true so this condition will be executed only once
+
+                    // update showReview text
+                    showReview.setText("hide reviews");
+                    reviewsAreVisible = true;
+                    return;
+                }
+
+                toggleReviewVisibility();
             }
         });
 
         return rootView;
+    }
+
+    private void toggleReviewVisibility() {
+        if (reviewsAreVisible) {
+            reviewList.setVisibility(View.GONE);
+//            reviewList
+            showReview.setText("show reviews");
+
+            reviewsAreVisible = false;
+        }
+        else {
+            reviewList.setVisibility(View.VISIBLE);
+            showReview.setText("hide reviews");
+
+            reviewsAreVisible = true;
+        }
     }
 
     @Override
