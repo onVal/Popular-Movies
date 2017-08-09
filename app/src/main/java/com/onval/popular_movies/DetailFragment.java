@@ -33,6 +33,8 @@ public class DetailFragment extends Fragment implements DetailInterface {
     @BindView(R.id.favorites)       ImageView favoritesStar;
     @BindView(R.id.markasfav)       TextView favoritesText;
     @BindView(R.id.trailers_list)   LinearLayout trailerList;
+    @BindView(R.id.reviews_list)    LinearLayout reviewList;
+    @BindView(R.id.show_reviews)    TextView showReview;
 
     private Context context;
     private DetailPresenter presenter;
@@ -85,24 +87,13 @@ public class DetailFragment extends Fragment implements DetailInterface {
         //Load trailers dynamically making a call to the server
         presenter.loadTrailers(context, movieDetail);
 
-        //noinspection RestrictedApi
-//        LinearLayout trailerList = (LinearLayout) rootView.findViewById(R.id.trailers_list);
-//
-//        View trailer = inflater.inflate(R.layout.trailer_item, trailerList, true);
-//        View trailer2 = inflater.inflate(R.layout.trailer_item, trailerList, true);
-
-
-//        trailerList.addView(trailer);
-//        trailerList.addView(trailer2);
-
-
-//        TextView reviews = (TextView) container.findViewById(R.id.show_reviews);
-//        reviews.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                presenter.loadReviews(context, movieDetail);
-//            }
-//        });
+        //Load reviews on click
+        showReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.loadReviews(context, movieDetail);
+            }
+        });
 
         return rootView;
     }
@@ -130,8 +121,17 @@ public class DetailFragment extends Fragment implements DetailInterface {
     }
 
     @Override
-    public void onLoadReviews() {
+    public void onLoadReviews(String user, String review_content) {
+        //noinspection RestrictedApi
+        View review = getLayoutInflater(null).inflate(R.layout.review_item, reviewList, false);
 
+        TextView userView = (TextView) review.findViewById(R.id.user);
+        TextView reviewContent = (TextView) review.findViewById(R.id.review_content);
+
+        userView.setText(user);
+        reviewContent.setText(review_content);
+
+        reviewList.addView(review);
     }
 
     @Override

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.onval.popular_movies.DetailInterface;
@@ -79,7 +77,10 @@ public class DetailPresenter implements DetailPresenterInterface {
         int id = movieDetail.getId();
 
         Uri uri = Utilities.createReviewUri(id);
+
+        fetcher = new MovieFetcher(reviewResponder, reviewResponder, null);
         fetcher.fetchFromServer(context, uri);
+        //Go to ReviewResponder onResponse method to see how it continues from here
     }
 
     private class TrailerResponder implements Response.Listener<JSONObject>, Response.ErrorListener {
@@ -93,7 +94,7 @@ public class DetailPresenter implements DetailPresenterInterface {
                     JSONObject trailer = results.optJSONObject(i);
 
                     if (trailer == null)
-                        break; // this means that there is no more trailer: exits the loop
+                        break; // this means that there are no more trailers: exits the loop
 
                     name = trailer.getString("name");
                     key = trailer.getString("key");
@@ -110,22 +111,33 @@ public class DetailPresenter implements DetailPresenterInterface {
         }
     }
 
-    private class ReviewResponder implements Response.Listener<JSONObject>, Response.ErrorListener,
-            RequestQueue.RequestFinishedListener<JSONObject> {
-
+    private class ReviewResponder implements Response.Listener<JSONObject>, Response.ErrorListener {
         @Override
-        public void onRequestFinished(Request<JSONObject> request) {
+        public void onResponse(JSONObject response) {
+            try {
+                JSONArray results = response.getJSONArray("results");
 
+                String user, text;
+
+                for (int i=0; ; i++) { //this loop exits when optJSONObject returns null
+                    JSONObject review = results.optJSONObject(i);
+
+                    if (review == null)
+                        break; // this means that there are no more reviews: exits the loop
+
+                    user = review.getString("author");
+                    text = review.getString("content");
+
+                    view.onLoadReviews(user, text);
+                }
+            } catch (JSONException exc) {
+                exc.printStackTrace();
+            }
         }
 
         @Override
         public void onErrorResponse(VolleyError error) {
-
-        }
-
-        @Override
-        public void onResponse(JSONObject response) {
-
+            // do nothing
         }
     }
 }

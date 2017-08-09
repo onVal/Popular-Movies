@@ -8,5 +8,5 @@ public interface DetailInterface {
     void onMarkFavorite();
     void onRemoveFavorite();
     void onLoadTrailer(String name, String key);
-    void onLoadReviews();
+    void onLoadReviews(String user, String review);
 }
