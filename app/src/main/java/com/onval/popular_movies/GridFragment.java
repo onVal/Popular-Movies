@@ -50,12 +50,13 @@ public class GridFragment extends Fragment implements
     @BindView(R.id.grid_view) RecyclerView mRecyclerView;
     @BindView(R.id.fab) FloatingActionButton loadMoreMoviesFab;
 
-    //Recyclers
+    //Adapters
     private RecyclerAdapter moviesAdapter;
-    private CursorRecyclerAdapter favoritesAdapter;
+    public CursorRecyclerAdapter favoritesAdapter;
 
     private GridLayoutManager layoutManager;
 
+    //Presenter
     private GridPresenter presenter;
 
     public GridFragment() {
@@ -73,7 +74,13 @@ public class GridFragment extends Fragment implements
 
         if (moviesAdapter != null) {
             presenter.sortMovies(mContext, mMovieDetailsArray, Utilities.getSortOption(mContext));
-            moviesAdapter.notifyDataSetChanged(); //TODO: is this line necessary?
+        }
+
+        // If it's currently showing favorites, update the adapter cursor
+        // to update the recyclerview in case the user removed a movie from favs
+        if (mRecyclerView.getAdapter() instanceof CursorRecyclerAdapter) {
+            favoritesAdapter.updateCursor();
+            favoritesAdapter.notifyDataSetChanged();
         }
     }
 

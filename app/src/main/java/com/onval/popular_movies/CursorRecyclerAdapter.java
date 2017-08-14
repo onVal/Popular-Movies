@@ -73,4 +73,8 @@ public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAd
             }
         }
     }
+
+    public void updateCursor() {
+        cursor = context.getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
+    }
 }

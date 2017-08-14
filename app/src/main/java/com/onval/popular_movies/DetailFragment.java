@@ -175,6 +175,11 @@ public class DetailFragment extends Fragment implements DetailInterface {
         favoritesStar.setImageResource(R.drawable.empty_star);
         favoritesText.setText(getString(R.string.mark_as_favorite));
         favoritesText.setTextColor(Color.WHITE);
+
+//        Fragment parentFragment = getParentFragment();
+//        if (parentFragment instanceof GridFragment) {
+//            ((GridFragment) parentFragment).favoritesAdapter.notifyItemRemoved(position);
+//        }
     }
 
     private void onLoadFavoriteUI() {
