@@ -1,4 +1,4 @@
-package com.onval.popular_movies;
+package com.onval.popular_movies.Adapters;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.onval.popular_movies.ItemClickInterface;
+import com.onval.popular_movies.MovieDetail;
+import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
 import com.squareup.picasso.Picasso;
 
@@ -24,7 +27,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
     private ArrayList<MovieDetail> mMovieDetails;
     private ItemClickInterface mInterface;
 
-    RecyclerAdapter(Context context, ArrayList<MovieDetail> movieDetails, ItemClickInterface myInterface) {
+    public RecyclerAdapter(Context context, ArrayList<MovieDetail> movieDetails, ItemClickInterface myInterface) {
         mContext = context;
         mMovieDetails = movieDetails;
         mInterface = myInterface;
@@ -58,7 +61,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MovieP
     }
 
     // ViewHolder class
-    class MoviePosterHolder extends RecyclerView.ViewHolder {
+    public class MoviePosterHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
         MoviePosterHolder(ImageView imageView) {

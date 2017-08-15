@@ -1,4 +1,4 @@
-package com.onval.popular_movies;
+package com.onval.popular_movies.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.onval.popular_movies.ItemClickInterface;
 import com.onval.popular_movies.Provider.MovieContract;
+import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
 import com.squareup.picasso.Picasso;
 
@@ -17,13 +19,13 @@ import com.squareup.picasso.Picasso;
  * Created by gval on 26/06/2017.
  */
 
-public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAdapter.FavPosterHolder> {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavPosterHolder> {
     private Context context;
     private Cursor cursor;
     private int imageColumnIndex;
     private ItemClickInterface mInterface;
 
-    CursorRecyclerAdapter(Context context, Cursor cursor, ItemClickInterface mInterface) {
+    public FavoritesAdapter(Context context, Cursor cursor, ItemClickInterface mInterface) {
         this.context = context;
         this.cursor = cursor;
         this.cursor.moveToFirst();
@@ -54,7 +56,7 @@ public class CursorRecyclerAdapter extends RecyclerView.Adapter<CursorRecyclerAd
     }
 
     // ViewHolder class
-    class FavPosterHolder extends RecyclerView.ViewHolder {
+    public class FavPosterHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
 
         FavPosterHolder(ImageView imageView) {

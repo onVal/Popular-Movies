@@ -10,7 +10,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +21,8 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.onval.popular_movies.Activities.DetailActivity;
 import com.onval.popular_movies.Activities.MyPreferenceActivity;
+import com.onval.popular_movies.Adapters.FavoritesAdapter;
+import com.onval.popular_movies.Adapters.RecyclerAdapter;
 import com.onval.popular_movies.Presenter.GridPresenter;
 import com.onval.popular_movies.Provider.MovieContract;
 import com.onval.popular_movies.Utilities.Utilities;
@@ -52,7 +53,7 @@ public class GridFragment extends Fragment implements
 
     //Adapters
     private RecyclerAdapter moviesAdapter;
-    public CursorRecyclerAdapter favoritesAdapter;
+    public FavoritesAdapter favoritesAdapter;
 
     private GridLayoutManager layoutManager;
 
@@ -78,7 +79,7 @@ public class GridFragment extends Fragment implements
 
         // If it's currently showing favorites, update the adapter cursor
         // to update the recyclerview in case the user removed a movie from favs
-        if (mRecyclerView.getAdapter() instanceof CursorRecyclerAdapter) {
+        if (mRecyclerView.getAdapter() instanceof FavoritesAdapter) {
             favoritesAdapter.updateCursor();
             favoritesAdapter.notifyDataSetChanged();
         }
@@ -122,7 +123,7 @@ public class GridFragment extends Fragment implements
     }
 
     @Override
-    public void onItemClick(CursorRecyclerAdapter.FavPosterHolder holder) {
+    public void onItemClick(FavoritesAdapter.FavPosterHolder holder) {
         int position = holder.getAdapterPosition();
         Intent intent = new Intent(mContext, DetailActivity.class);
 
@@ -193,11 +194,12 @@ public class GridFragment extends Fragment implements
         }
         else {
             favCursor = getContext().getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
-            Log.d("n of items", favCursor.getCount() + "");
-            favoritesAdapter = new CursorRecyclerAdapter(getContext(), favCursor, this);
+//            Log.d("n of items", favCursor.getCount() + "");
 
-            mRecyclerView.setAdapter(favoritesAdapter);
-            GridIsShowingFavorites = true;
+                favoritesAdapter = new FavoritesAdapter(getContext(), favCursor, this);
+
+                mRecyclerView.setAdapter(favoritesAdapter);
+                GridIsShowingFavorites = true;
         }
     }
 
