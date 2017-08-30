@@ -1,6 +1,7 @@
 package com.onval.popular_movies.Utilities;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -104,5 +105,14 @@ public class Utilities {
         String id = movieId + "";
         return MovieContract.Favorites.CONTENT_URI.buildUpon()
                 .appendPath(id).build();
+    }
+
+    public static boolean isFavoritesEmpty(Context context)  {
+        //TODO: I need to fix this, query() returns null
+        Cursor cursor = context.getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
+        boolean isEmpty = cursor.getCount() == 0;
+        cursor.close();
+        return isEmpty;
+
     }
 }

@@ -6,7 +6,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.onval.popular_movies.GridFragment;
+import com.onval.popular_movies.MovieFragment;
 import com.onval.popular_movies.GridInterface;
 import com.onval.popular_movies.Model.MovieFetcher;
 import com.onval.popular_movies.MovieDetail;
@@ -23,27 +23,27 @@ import java.util.Comparator;
  * Created by gval on 14/06/2017.
  */
 
-public class GridPresenter implements PresenterInterface,
+public class MoviePresenter implements PresenterInterface,
         Response.Listener<JSONObject>, Response.ErrorListener,
         RequestQueue.RequestFinishedListener<JSONObject> {
 
     private GridInterface gridInterface;
     private MovieFetcher fetcher;
 
-    public GridPresenter(GridInterface view) {
+    public MoviePresenter(GridInterface view) {
         gridInterface = view;
         fetcher = new MovieFetcher(this, this, this);
     }
 
     @Override
     public void fetchMoviesAsync() {
-        Context context = ((GridFragment) gridInterface).getContext();
+        Context context = ((MovieFragment) gridInterface).getContext();
         fetcher.fetchNextPage(context);
     }
 
     @Override
     public void onResponse(JSONObject response) {
-        GridFragment view = (GridFragment) gridInterface;
+        MovieFragment view = (MovieFragment) gridInterface;
         Context context = view.getContext();
 
         fetcher.addMoviesFromJSON(response, view.mMovieDetailsArray);

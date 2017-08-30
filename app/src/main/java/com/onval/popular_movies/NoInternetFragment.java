@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.onval.popular_movies.GridFragment;
-import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
 
 /**
@@ -34,10 +32,10 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View view) {
         /* When the retry button is clicked, check again for internet connection.
-         * If there is one, replace this fragment with the GridFragment */
+         * If there is one, replace this fragment with the MovieFragment */
         if (Utilities.isOnline(context)) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.activity_main, new GridFragment())
+                    .replace(R.id.main_container, new MovieFragment())
                     .commit();
         }
         else {

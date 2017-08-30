@@ -1,6 +1,5 @@
 package com.onval.popular_movies;
 
-import com.onval.popular_movies.Adapters.FavoritesAdapter;
 import com.onval.popular_movies.Adapters.RecyclerAdapter;
 
 /**
@@ -9,5 +8,4 @@ import com.onval.popular_movies.Adapters.RecyclerAdapter;
 
 public interface ItemClickInterface {
     void onItemClick(RecyclerAdapter.MoviePosterHolder holder);
-    void onItemClick(FavoritesAdapter.FavPosterHolder holder);
 }

@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.onval.popular_movies.ItemClickInterface;
+import com.onval.popular_movies.FavItemClickInterface;
 import com.onval.popular_movies.Provider.MovieContract;
 import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
@@ -23,9 +23,9 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.FavP
     private Context context;
     private Cursor cursor;
     private int imageColumnIndex;
-    private ItemClickInterface mInterface;
+    private FavItemClickInterface mInterface;
 
-    public FavoritesAdapter(Context context, Cursor cursor, ItemClickInterface mInterface) {
+    public FavoritesAdapter(Context context, Cursor cursor, FavItemClickInterface mInterface) {
         this.context = context;
         this.cursor = cursor;
         this.cursor.moveToFirst();

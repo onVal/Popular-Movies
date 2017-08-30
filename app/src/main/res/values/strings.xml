@@ -39,5 +39,8 @@
 
     <string name="show_reviews">Show reviews</string>
 
+    <string name="no_fav_msg">You have no favorites added yet. ;-(\n\nAdd (or remove) favorites by clicking on the
+        \nlittle star inside the Detail view of a movie.</string>
+
 
 </resources>

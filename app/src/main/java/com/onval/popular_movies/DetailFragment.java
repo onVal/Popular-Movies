@@ -177,8 +177,8 @@ public class DetailFragment extends Fragment implements DetailInterface {
         favoritesText.setTextColor(Color.WHITE);
 
 //        Fragment parentFragment = getParentFragment();
-//        if (parentFragment instanceof GridFragment) {
-//            ((GridFragment) parentFragment).favoritesAdapter.notifyItemRemoved(position);
+//        if (parentFragment instanceof MovieFragment) {
+//            ((MovieFragment) parentFragment).favoritesAdapter.notifyItemRemoved(position);
 //        }
     }
 
