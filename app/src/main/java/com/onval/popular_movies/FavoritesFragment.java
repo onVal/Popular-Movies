@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by gval on 15/08/2017.
  */
 
-public class FavoritesFragment extends Fragment {
+public class FavoritesFragment extends Fragment implements FavItemClickInterface {
 
     @BindView(R.id.fav_view) RecyclerView favView;
 
@@ -46,24 +46,36 @@ public class FavoritesFragment extends Fragment {
 
         favCursor = context.getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
         layoutManager = new GridLayoutManager(context, 3); // todo: fix span count
-        favAdapter = new FavoritesAdapter(context, favCursor, new FavItemClickInterface() {
-            @Override
-            public void onItemClick(FavoritesAdapter.FavPosterHolder holder) {
-                int position = holder.getAdapterPosition();
-                Intent intent = new Intent(context, DetailActivity.class);
 
-                MovieDetail movieDetail = movieDetailFromCursor(favCursor, position); //todo: ok this is bad design...
-
-                intent.putExtra(MovieDetail.MOVIE_DETAILS_ID, movieDetail);
-                startActivity(intent);
-            }
-        });
+        favAdapter = new FavoritesAdapter(context, favCursor, this);
 
         favView.setLayoutManager(layoutManager);
         favView.setAdapter(favAdapter);
 
         return rootView;
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+//        favAdapter.updateCursor();
+//        favAdapter.notifyDataSetChanged();
+
+        //todo: this works in updating correctly the fav fragment...but I definitely don't like it!
+        favCursor = context.getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
+        favAdapter = new FavoritesAdapter(context, favCursor, this);
+        favView.setAdapter(favAdapter);
+    }
+
+    @Override
+    public void onItemClick(FavoritesAdapter.FavPosterHolder holder) {
+        int position = holder.getAdapterPosition();
+        Intent intent = new Intent(context, DetailActivity.class);
+
+        MovieDetail movieDetail = movieDetailFromCursor(favCursor, position); //todo: ok this is bad design...
+
+        intent.putExtra(MovieDetail.MOVIE_DETAILS_ID, movieDetail);
+        startActivity(intent);
     }
 
     private MovieDetail movieDetailFromCursor(Cursor cursor, int position) {
