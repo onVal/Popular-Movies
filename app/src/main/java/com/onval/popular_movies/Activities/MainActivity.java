@@ -17,9 +17,9 @@ import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
 
 public class MainActivity extends AppCompatActivity {
-    final String MOVIE_FRAGMENT_TAG = "movie_tag";
-    final String FAV_FRAGMENT_TAG = "fav_tag";
-    final String NO_FAV_FRAGMENT_TAG = "nofav_tag";
+    private final String MOVIE_FRAGMENT_TAG = "movie_tag";
+    private final String FAV_FRAGMENT_TAG = "fav_tag";
+    private final String NO_FAV_FRAGMENT_TAG = "nofav_tag";
 
     FragmentManager fragmentManager;
     MyPresenter presenter;
@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        toggleFavoriteMenuItemTitle(item);
+
         if (item.getItemId() == R.id.settings) {
             startActivity(new Intent(this, MyPreferenceActivity.class));
         }
@@ -95,19 +97,11 @@ public class MainActivity extends AppCompatActivity {
                     .commit();
         }
     }
-}
 
-    //todo: I think I won't need these...actually i might
-//    private void toggleFavoriteMenuItemTitle(MenuItem item) {
-//        if (item.getTitle().equals(getString(R.string.show_favorites)))
-//            item.setTitle(getString(R.string.show_movies));
-//        else
-//            item.setTitle(getString(R.string.show_favorites));
-//    }
-//
-//    private void toggleTitleBar(MenuItem item) {
-//        if (item.getTitle().equals(getString(R.string.show_favorites)))
-//            setTitle(R.string.app_name);
-//        else
-//            setTitle(R.string.fav_title);
-//    }
+    private void toggleFavoriteMenuItemTitle(MenuItem item) {
+        if (item.getTitle().equals(getString(R.string.show_favorites)))
+            item.setTitle(getString(R.string.show_movies));
+        else
+            item.setTitle(getString(R.string.show_favorites));
+    }
+}

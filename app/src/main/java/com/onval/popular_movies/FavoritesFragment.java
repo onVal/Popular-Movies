@@ -58,6 +58,10 @@ public class FavoritesFragment extends Fragment implements FavItemClickInterface
     @Override
     public void onResume() {
         super.onResume();
+
+        getActivity().setTitle(getString(R.string.fav_title));
+
+//        ...This almost worked...
 //        favAdapter.updateCursor();
 //        favAdapter.notifyDataSetChanged();
 
