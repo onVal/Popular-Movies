@@ -1,4 +1,4 @@
-# Udacity Project: Popular Movies (part 1)
+# Udacity Project: Popular Movies (part 2)
 Simple app that shows a grid of the most popular movies and arranges them
 either by popularity or ratings.
 
