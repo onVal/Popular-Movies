@@ -27,6 +27,8 @@ public class MoviePresenter implements PresenterInterface,
         Response.Listener<JSONObject>, Response.ErrorListener,
         RequestQueue.RequestFinishedListener<JSONObject> {
 
+    private static final int NUM_OF_PAGES_TO_FETCH = 2;
+
     private GridInterface gridInterface;
     private MovieFetcher fetcher;
 
@@ -38,7 +40,10 @@ public class MoviePresenter implements PresenterInterface,
     @Override
     public void fetchMoviesAsync() {
         Context context = ((MovieFragment) gridInterface).getContext();
-        fetcher.fetchNextPage(context);
+
+        for (int i=0; i < NUM_OF_PAGES_TO_FETCH; i++) {
+            fetcher.fetchNextPage(context);
+        }
     }
 
     @Override

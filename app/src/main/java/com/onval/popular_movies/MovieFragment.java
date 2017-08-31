@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MovieFragment extends Fragment implements
-        GridInterface, View.OnClickListener, ItemClickInterface {
+        GridInterface, ItemClickInterface {
 
     private final String LOG_TAG = MovieFragment.class.getSimpleName();
 
@@ -40,7 +39,6 @@ public class MovieFragment extends Fragment implements
 
     //Views
     @BindView(R.id.grid_view) RecyclerView moviesRecyclerView;
-    @BindView(R.id.fab) FloatingActionButton loadMoreMoviesFab;
 
     private RecyclerAdapter moviesAdapter;
     private GridLayoutManager layoutManager;
@@ -80,7 +78,6 @@ public class MovieFragment extends Fragment implements
         layoutManager = new GridLayoutManager(mContext, COL_SHOWN_IN_PORTRAIT);
 
         moviesRecyclerView.setLayoutManager(layoutManager);
-        loadMoreMoviesFab.setOnClickListener(this);
 
         presenter = new MoviePresenter(this);
 
@@ -102,12 +99,6 @@ public class MovieFragment extends Fragment implements
         Intent intent = new Intent(mContext, DetailActivity.class);
         intent.putExtra(MovieDetail.MOVIE_DETAILS_ID, mMovieDetailsArray.get(position));
         startActivity(intent);
-    }
-
-    //onClick for FAB
-    @Override
-    public void onClick(View view) {
-        presenter.fetchMoviesAsync();
     }
 
     @Override
