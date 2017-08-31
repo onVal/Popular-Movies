@@ -60,13 +60,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        toggleFavoriteMenuItemTitle(item);
 
         if (item.getItemId() == R.id.settings) {
             startActivity(new Intent(this, MyPreferenceActivity.class));
         }
 
         if (item.getItemId() == R.id.favorites) {
+            toggleFavoriteMenuItemTitle(item);
             onFavoritesClicked();
         }
 
