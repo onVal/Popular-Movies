@@ -108,7 +108,6 @@ public class Utilities {
     }
 
     public static boolean isFavoritesEmpty(Context context)  {
-        //TODO: I need to fix this, query() returns null
         Cursor cursor = context.getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
         boolean isEmpty = cursor.getCount() == 0;
         cursor.close();

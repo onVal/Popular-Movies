@@ -6,6 +6,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textAlignment="center"
+        android:textColor="#fff"
         android:text="@string/no_fav_msg"
         />
 
