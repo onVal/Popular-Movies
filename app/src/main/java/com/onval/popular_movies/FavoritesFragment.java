@@ -2,6 +2,7 @@ package com.onval.popular_movies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,9 @@ public class FavoritesFragment extends Fragment implements FavItemClickInterface
 
     @BindView(R.id.fav_view) RecyclerView favView;
 
+    private final int COL_SHOWN_IN_PORTRAIT = 3;
+    private final int COL_SHOWN_IN_LANDSCAPE = 5;
+
     public Cursor favCursor;
     private Context context;
 
@@ -45,7 +49,7 @@ public class FavoritesFragment extends Fragment implements FavItemClickInterface
         context = getContext();
 
         favCursor = context.getContentResolver().query(MovieContract.Favorites.CONTENT_URI, null, null, null, null);
-        layoutManager = new GridLayoutManager(context, 3); // todo: fix span count
+        layoutManager = new GridLayoutManager(context, COL_SHOWN_IN_PORTRAIT);
 
         favAdapter = new FavoritesAdapter(context, favCursor, this);
 
@@ -60,6 +64,11 @@ public class FavoritesFragment extends Fragment implements FavItemClickInterface
         super.onResume();
 
         getActivity().setTitle(getString(R.string.fav_title));
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            layoutManager.setSpanCount(COL_SHOWN_IN_PORTRAIT);
+        else
+            layoutManager.setSpanCount(COL_SHOWN_IN_LANDSCAPE);
 
 //        ...This almost worked...
 //        favAdapter.updateCursor();
