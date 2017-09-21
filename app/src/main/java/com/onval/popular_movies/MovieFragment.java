@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,7 @@ public class MovieFragment extends Fragment implements
     public ArrayList<MovieDetail> mMovieDetailsArray = new ArrayList<>();
 
     //Views
-    @BindView(R.id.grid_view) RecyclerView moviesRecyclerView;
+    @BindView(R.id.grid_view) StatefulRecyclerView moviesRecyclerView;
 
     private RecyclerAdapter moviesAdapter;
     private GridLayoutManager layoutManager;
@@ -86,8 +85,6 @@ public class MovieFragment extends Fragment implements
 
         if (moviesAdapter == null)
             moviesAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray, this); //todo:maybe refactor this method
-
-        moviesRecyclerView.setAdapter(moviesAdapter);
 
         return rootView;
     }
