@@ -68,9 +68,7 @@ public class MovieFragment extends Fragment implements
             //if it's not the first time resuming this fragment, I should update
             //todo: this is not good because it will refetch stuff even when only a
             //todo: simple config change like an orientation change occurs
-            presenter.fetchMoviesAsync(mContext);
-            moviesAdapter.notifyDataSetChanged();
-            restoreLayoutState();
+            presenter.fetchMoviesAsync(mContext); //onMoviesFetched gets called when this finishes
         }
     }
 
@@ -119,6 +117,7 @@ public class MovieFragment extends Fragment implements
     @Override
     public void onMoviesFetched() {
         initializeAdapter();
+        moviesAdapter.notifyDataSetChanged();
         restoreLayoutState();
     }
 
