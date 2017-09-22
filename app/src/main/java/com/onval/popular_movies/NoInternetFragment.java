@@ -1,7 +1,6 @@
 package com.onval.popular_movies;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,6 @@ import com.onval.popular_movies.Utilities.Utilities;
  */
 
 public class NoInternetFragment extends Fragment implements View.OnClickListener {
-    private final Context context = getContext();
 
     @Nullable
     @Override
@@ -33,13 +31,13 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         /* When the retry button is clicked, check again for internet connection.
          * If there is one, replace this fragment with the MovieFragment */
-        if (Utilities.isOnline(context)) {
+        if (Utilities.isOnline(getActivity().getApplicationContext())) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.main_container, new MovieFragment())
                     .commit();
         }
         else {
-            Toast.makeText(context, "Still no connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Still no connection", Toast.LENGTH_SHORT).show();
         }
     }
 
