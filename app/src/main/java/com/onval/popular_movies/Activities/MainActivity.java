@@ -11,7 +11,6 @@ import com.facebook.stetho.Stetho;
 import com.onval.popular_movies.EmptyFavFragment;
 import com.onval.popular_movies.FavoritesFragment;
 import com.onval.popular_movies.MovieFragment;
-import com.onval.popular_movies.MyPresenter;
 import com.onval.popular_movies.NoInternetFragment;
 import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
@@ -22,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private final String NO_FAV_FRAGMENT_TAG = "nofav_tag";
 
     FragmentManager fragmentManager;
-    MyPresenter presenter;
+//    MyPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        presenter = new MyPresenter();
+//        presenter = new MyPresenter();
 
         if (savedInstanceState == null) {
             /* Check for internet connection at launch,
              * load either the expected gridFragment, or a temporary
              * NoInternetFragment until the device has internet access again
              */
-            if (Utilities.isOnline(this)) {
+            if (Utilities.isOnline(getApplicationContext())) {
                 fragmentManager.beginTransaction()
                         .add(R.id.main_container, new MovieFragment(), MOVIE_FRAGMENT_TAG)
                         .commit();
@@ -66,8 +65,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.favorites) {
-            toggleFavoriteMenuItemTitle(item);
-            onFavoritesClicked();
+            //For simplicity sake I just deactivate the button when there's no internet
+            //Yeah it's not optimal but whatever
+            if (fragmentManager.findFragmentByTag(NO_FAV_FRAGMENT_TAG) != null) {
+                toggleFavoriteMenuItemTitle(item);
+                onFavoritesClicked();
+            }
         }
 
         return super.onOptionsItemSelected(item);
