@@ -27,12 +27,15 @@ import butterknife.ButterKnife;
 public class MovieFragment extends Fragment implements
         GridInterface, ItemClickInterface {
 
-    private final String LOG_TAG = MovieFragment.class.getSimpleName();
+    private static final String LAYOUT_MANAGER_STATE = "layout-state";
+    private static final String LOG_TAG = MovieFragment.class.getSimpleName();
 
     private final int COL_SHOWN_IN_PORTRAIT = 3;
     private final int COL_SHOWN_IN_LANDSCAPE = 5;
 
     private Context mContext;
+
+    Bundle state;
 
     //Data
     public ArrayList<MovieDetail> mMovieDetailsArray = new ArrayList<>();
@@ -61,6 +64,8 @@ public class MovieFragment extends Fragment implements
         else
             layoutManager.setSpanCount(COL_SHOWN_IN_LANDSCAPE);
 
+        restoreLayoutState();
+
         if (moviesAdapter != null) {
             presenter.sortMovies(mContext, mMovieDetailsArray, Utilities.getSortOption(mContext));
             moviesAdapter.notifyDataSetChanged();
@@ -75,21 +80,26 @@ public class MovieFragment extends Fragment implements
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
 
-        layoutManager = new GridLayoutManager(mContext, COL_SHOWN_IN_PORTRAIT);
-
-        moviesRecyclerView.setLayoutManager(layoutManager);
+        if (layoutManager == null) {
+            layoutManager = new GridLayoutManager(mContext, COL_SHOWN_IN_PORTRAIT);
+            moviesRecyclerView.setLayoutManager(layoutManager);
+        }
 
         presenter = new MoviePresenter(this);
 
         if (mMovieDetailsArray.size() == 0)
             presenter.fetchMoviesAsync();
 
-        if (moviesAdapter == null)
-            moviesAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray, this); //todo:maybe refactor this method
-
-        moviesRecyclerView.setAdapter(moviesAdapter);
-
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        state = new Bundle();
+        state.putParcelable(LAYOUT_MANAGER_STATE, layoutManager.onSaveInstanceState());
+
     }
 
     //Called when a movie is selected
@@ -107,10 +117,22 @@ public class MovieFragment extends Fragment implements
     }
 
     @Override
-    public void initializeAdapter() {
-        if (moviesAdapter == null)
+    public void onMoviesFetched() {
+        initializeAdapter();
+        restoreLayoutState();
+    }
+
+    private void initializeAdapter() {
+        if (moviesAdapter == null) {
             moviesAdapter = new RecyclerAdapter(mContext, mMovieDetailsArray, this);
-        moviesRecyclerView.setAdapter(moviesAdapter);
+            moviesRecyclerView.setAdapter(moviesAdapter);
+        }
+    }
+
+    private void restoreLayoutState() {
+        //Restore layout manager scroll position
+        if (state != null)
+            layoutManager.onRestoreInstanceState(state.getParcelable(LAYOUT_MANAGER_STATE));
     }
 }
 

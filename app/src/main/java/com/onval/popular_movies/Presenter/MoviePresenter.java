@@ -64,7 +64,7 @@ public class MoviePresenter implements PresenterInterface,
 
     @Override
     public void onRequestFinished(Request<JSONObject> request) {
-        gridInterface.initializeAdapter();
+        gridInterface.onMoviesFetched();
     }
 
     public void sortMovies(Context context, ArrayList<MovieDetail> movieDetails, String sortOption) {
