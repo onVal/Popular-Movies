@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.onval.popular_movies.Presenter.DetailPresenter;
@@ -25,6 +26,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class DetailFragment extends Fragment implements DetailInterface {
+    private static final String SCROLL_POSITION = "current-scroll-position";
+
+    private static final String REVIEWS_HAVE_BEEN_LOADED = "loaded-reviews";
+    private static final String REVIEWS_ARE_VISIBLE = "visible-reviews";
+
+
     @BindView(R.id.thumbnail)       ImageView thumbnail;
     @BindView(R.id.title)           TextView titleView;
     @BindView(R.id.release_date)    TextView releaseDateView;
@@ -42,6 +49,10 @@ public class DetailFragment extends Fragment implements DetailInterface {
     private Context context;
     private DetailPresenter presenter;
     private MovieDetail movieDetail;
+
+    //Reference used to be able to update the scroll position
+    private ScrollView scrollView;
+    private int[] scrollPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,13 +119,53 @@ public class DetailFragment extends Fragment implements DetailInterface {
             }
         });
 
+
+        //Code to deal with ScrollView retaining its scroll position
+        if (rootView instanceof ScrollView)
+            scrollView = (ScrollView) rootView;
+
+        //Code to let reviews be visible even on config changes
+        if (savedInstanceState != null) {
+            reviewsHaveBeenLoaded = savedInstanceState.getBoolean(REVIEWS_HAVE_BEEN_LOADED);
+            reviewsAreVisible = savedInstanceState.getBoolean(REVIEWS_ARE_VISIBLE);
+        }
+
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //Recover from previous position
+        if (reviewsAreVisible) {
+            presenter.loadReviews(context, movieDetail);
+            showReview.setText("hide reviews");
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putIntArray(SCROLL_POSITION,
+                new int[] {scrollView.getScrollX(), scrollView.getScrollY()});
+
+        outState.putBoolean(REVIEWS_HAVE_BEEN_LOADED, reviewsHaveBeenLoaded);
+        outState.putBoolean(REVIEWS_ARE_VISIBLE, reviewsAreVisible);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+        if (savedInstanceState != null)
+            scrollPosition = savedInstanceState.getIntArray(SCROLL_POSITION);
     }
 
     private void toggleReviewVisibility() {
         if (reviewsAreVisible) {
             reviewList.setVisibility(View.GONE);
-//            reviewList
             showReview.setText("show reviews");
 
             reviewsAreVisible = false;
@@ -175,11 +226,17 @@ public class DetailFragment extends Fragment implements DetailInterface {
         favoritesStar.setImageResource(R.drawable.empty_star);
         favoritesText.setText(getString(R.string.mark_as_favorite));
         favoritesText.setTextColor(Color.WHITE);
+    }
 
-//        Fragment parentFragment = getParentFragment();
-//        if (parentFragment instanceof MovieFragment) {
-//            ((MovieFragment) parentFragment).favoritesAdapter.notifyItemRemoved(position);
-//        }
+    @Override
+    public void restoreScrollPosition() {
+        if(scrollPosition != null) {
+            scrollView.post(new Runnable() {
+                public void run() {
+                    scrollView.scrollTo(scrollPosition[0], scrollPosition[1]);
+                }
+            });
+        }
     }
 
     private void onLoadFavoriteUI() {

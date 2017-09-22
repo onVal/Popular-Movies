@@ -83,7 +83,8 @@ public class DetailPresenter implements DetailPresenterInterface {
         //Go to ReviewResponder onResponse method to see how it continues from here
     }
 
-    private class TrailerResponder implements Response.Listener<JSONObject>, Response.ErrorListener {
+    private class TrailerResponder implements
+            Response.Listener<JSONObject>, Response.ErrorListener {
         @Override
         public void onResponse(JSONObject response) {
             try {
@@ -103,6 +104,9 @@ public class DetailPresenter implements DetailPresenterInterface {
             } catch (JSONException exc) {
                 exc.printStackTrace();
             }
+
+            view.restoreScrollPosition();
+
         }
 
         @Override
@@ -133,6 +137,8 @@ public class DetailPresenter implements DetailPresenterInterface {
             } catch (JSONException exc) {
                 exc.printStackTrace();
             }
+
+            view.restoreScrollPosition();
         }
 
         @Override

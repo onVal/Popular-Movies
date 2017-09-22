@@ -9,4 +9,5 @@ public interface DetailInterface {
     void onRemoveFavorite();
     void onLoadTrailer(String name, String key);
     void onLoadReviews(String user, String review);
+    void restoreScrollPosition();
 }
