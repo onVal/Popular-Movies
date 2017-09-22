@@ -20,7 +20,7 @@ public class Utilities {
     final private String LOG_TAG = Utilities.class.getSimpleName();
 
     //URL for movies info
-    final static private String BASE_URL ="https://api.themoviedb.org/3/discover/movie";
+    final static private String BASE_URL ="https://api.themoviedb.org/3/movie";
     final static private String API_KEY_PARAM = "api_key";
     final static private String PAGE_NUM_PARAM = "page";
 
@@ -33,18 +33,39 @@ public class Utilities {
     //Complete URL to retrieve the images
     final static public String IMAGE_URL = BASE_IMAGE_URL + IMAGE_SIZE;
 
-    //Base URL for Movie details
-    final static private String BASE_URL_MOVIE_DETAILS = "https://api.themoviedb.org/3/movie";
-
     //Base URL for Youtube Trailers
     final static private String BASE_YOUTUBE_URL = "https://www.youtube.com/watch?v=";
 
-    // Return the uri for fetching movies information in JSON format
-    public static Uri createMoviesUri(int pageNumber) {
+
+
+
+
+    public static Uri createMovieUri(Context context, String sortOption) {
+        if (sortOption.equals(context.getString(R.string.pref_popularity_value)))
+            return createPopularUri();
+        if (sortOption.equals(context.getString(R.string.pref_ratings_value)))
+            return createTopRatedUri();
+
+        return null; //shouldn't happen
+    }
+
+    //Return uri to fetch from /movie/popular
+    private static Uri createPopularUri() {
         return Uri.parse(BASE_URL).buildUpon()
+                .appendEncodedPath("popular")
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
-                .appendQueryParameter(PAGE_NUM_PARAM, String.valueOf(pageNumber))
+//                .appendQueryParameter(PAGE_NUM_PARAM, String.valueOf(pageNumber))
                 .build();
+    }
+
+    //Return uri to fetch from /movie/top_rated
+    private static Uri createTopRatedUri() {
+        return Uri.parse(BASE_URL).buildUpon()
+                .appendEncodedPath("top_rated")
+                .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
+//                .appendQueryParameter(PAGE_NUM_PARAM, String.valueOf(pageNumber))
+                .build();
+
     }
 
     // Return the uri for the image thumbnails
@@ -63,7 +84,7 @@ public class Utilities {
     public static Uri createTrailerUri(int movie_id) {
         String movieIdString = String.valueOf(movie_id);
 
-        return Uri.parse(BASE_URL_MOVIE_DETAILS).buildUpon()
+        return Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(movieIdString)
                 .appendEncodedPath("videos")
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)
@@ -73,7 +94,7 @@ public class Utilities {
     public static Uri createReviewUri(int movie_id) {
         String movieIdString = String.valueOf(movie_id);
 
-        return Uri.parse(BASE_URL_MOVIE_DETAILS).buildUpon()
+        return Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(movieIdString)
                 .appendEncodedPath("reviews")
                 .appendQueryParameter(API_KEY_PARAM, BuildConfig.MOVIEDB_API_KEY)

@@ -8,7 +8,6 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.onval.popular_movies.MovieDetail;
-import com.onval.popular_movies.Utilities.Utilities;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +20,7 @@ import java.util.ArrayList;
  */
 
 public class MovieFetcher {
-    private final String LOG_TAG = MovieFetcher.class.getSimpleName();
+    private static final String LOG_TAG = MovieFetcher.class.getSimpleName();
 
     private int mPageToFetch;
 
@@ -39,16 +38,14 @@ public class MovieFetcher {
     }
 
     // Use volley library to fetch movie data in JSON format
-    public void fetchNextPage(Context context) {
+    public void fetch(Context context, Uri uri) {
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.addRequestFinishedListener(requestFinishedListener);
 
-        ++mPageToFetch;
-
-        String singlePageURL = Utilities.createMoviesUri(mPageToFetch).toString();
+        String url = uri.toString();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                singlePageURL,              // string url
+                url,                        // string url
                 null,                       // optional JSONObject parameter (?)
                 onResponseListener,         //onResponse
                 onErrorListener             //onError
@@ -65,6 +62,8 @@ public class MovieFetcher {
         double vote_average;
         double popularity;
         String release_date;
+
+        movieDetails.clear();
 
         try {
             JSONArray jsonResultsArray = jsonObject.getJSONArray("results");

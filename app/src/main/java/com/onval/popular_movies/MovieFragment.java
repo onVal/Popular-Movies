@@ -17,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.onval.popular_movies.Activities.DetailActivity;
 import com.onval.popular_movies.Adapters.RecyclerAdapter;
 import com.onval.popular_movies.Presenter.MoviePresenter;
-import com.onval.popular_movies.Utilities.Utilities;
 
 import java.util.ArrayList;
 
@@ -64,11 +63,14 @@ public class MovieFragment extends Fragment implements
         else
             layoutManager.setSpanCount(COL_SHOWN_IN_LANDSCAPE);
 
-        restoreLayoutState();
 
         if (moviesAdapter != null) {
-            presenter.sortMovies(mContext, mMovieDetailsArray, Utilities.getSortOption(mContext));
+            //if it's not the first time resuming this fragment, I should update
+            //todo: this is not good because it will refetch stuff even when only a
+            //todo: simple config change like an orientation change occurs
+            presenter.fetchMoviesAsync(mContext);
             moviesAdapter.notifyDataSetChanged();
+            restoreLayoutState();
         }
     }
 
@@ -88,7 +90,7 @@ public class MovieFragment extends Fragment implements
         presenter = new MoviePresenter(this);
 
         if (mMovieDetailsArray.size() == 0)
-            presenter.fetchMoviesAsync();
+            presenter.fetchMoviesAsync(mContext);
 
         return rootView;
     }
