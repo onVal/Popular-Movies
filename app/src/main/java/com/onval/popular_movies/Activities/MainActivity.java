@@ -16,9 +16,10 @@ import com.onval.popular_movies.R;
 import com.onval.popular_movies.Utilities.Utilities;
 
 public class MainActivity extends AppCompatActivity {
-    private final String MOVIE_FRAGMENT_TAG = "movie_tag";
-    private final String FAV_FRAGMENT_TAG = "fav_tag";
-    private final String NO_FAV_FRAGMENT_TAG = "nofav_tag";
+    public static final String MOVIE_FRAGMENT_TAG = "movie_tag";
+    public static final String FAV_FRAGMENT_TAG = "fav_tag";
+    public static final String NO_FAV_FRAGMENT_TAG = "nofav_tag";
+    public static final String NO_INTERNET_TAG = "no_internet";
 
     FragmentManager fragmentManager;
 //    MyPresenter presenter;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             } else {
                 fragmentManager.beginTransaction()
-                        .add(R.id.main_container, new NoInternetFragment())
+                        .add(R.id.main_container, new NoInternetFragment(), NO_INTERNET_TAG)
                         .commit();
             }
 
@@ -65,11 +66,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (item.getItemId() == R.id.favorites) {
-            //For simplicity sake I just deactivate the button when there's no internet
-            //Yeah it's not optimal but whatever
-            if (fragmentManager.findFragmentByTag(NO_FAV_FRAGMENT_TAG) != null) {
+            /* is this bad design? yes!
+             * will I do it again? no!
+             * will you forgive me for this? hopefully :3
+             */
+            try {
+                if (!fragmentManager.findFragmentByTag(NO_INTERNET_TAG).isVisible()) {
+                    toggleFavoriteMenuItemTitle(item);
+                    onFavoritesClicked();
+                }
+
+            } catch (NullPointerException exc) {
+                //if null -> also toggle favorites
                 toggleFavoriteMenuItemTitle(item);
                 onFavoritesClicked();
+                exc.printStackTrace();
             }
         }
 
@@ -77,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onFavoritesClicked() {
+
         if (fragmentManager.findFragmentByTag(MOVIE_FRAGMENT_TAG).isVisible()) {
 
             if (Utilities.isFavoritesEmpty(this)) {

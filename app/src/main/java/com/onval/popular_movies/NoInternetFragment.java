@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.onval.popular_movies.Activities.MainActivity;
 import com.onval.popular_movies.Utilities.Utilities;
 
 /**
@@ -17,6 +20,12 @@ import com.onval.popular_movies.Utilities.Utilities;
  */
 
 public class NoInternetFragment extends Fragment implements View.OnClickListener {
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -33,12 +42,17 @@ public class NoInternetFragment extends Fragment implements View.OnClickListener
          * If there is one, replace this fragment with the MovieFragment */
         if (Utilities.isOnline(getActivity().getApplicationContext())) {
             getFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, new MovieFragment())
+                    .replace(R.id.main_container, new MovieFragment(), MainActivity.MOVIE_FRAGMENT_TAG)
                     .commit();
         }
         else {
             Toast.makeText(getContext(), "Still no connection", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        //do nothing
     }
 
     @Override
